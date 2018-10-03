@@ -324,6 +324,22 @@ void imprimirSecundario(Is* iproduct, Is* ibrand, Ir* icategory, Isf *iprice, in
 	}
 }
 
+void gerarPrimaryKey(Produto *prod){
+	prod->pk[0] = prod.nome[0];
+	prod->pk[1] = prod.nome[1];
+	prod->pk[2] = prod.marca[0];
+	prod->pk[3] = prod.marca[1];
+	prod->pk[4] = prod.data[0];
+	prod->pk[5] = prod.data[1];
+	prod->pk[6] = prod.data[3];
+	prod->pk[7] = prod.data[4];
+	prod->pk[8] = prod.ano[2];
+	prod->pk[9] = prod.ano[3];
+	prod->pk[10] = '\0';
+
+	// maiusculo(prod->pk);
+}
+
 Produto inserir_produto(Ip *iprimary, int *nregistros){
 	Produto novo;
 	scanf("\n%[^\n]s", novo.nome);
@@ -333,7 +349,12 @@ Produto inserir_produto(Ip *iprimary, int *nregistros){
 	scanf("\n%[^\n]s", novo.preco_base);
 	scanf("\n%[^\n]s", novo.desconto);
 	scanf("\n%[^\n]s", novo.categoria);
-	gerarChave();
+	gerarPrimaryKey(&novo);
 
 	return novo;
+}
+
+void maiusculo(char *str){
+	for(int i = 0; str[i]!='\0'; i++)
+		str[i] = toupper(str[i]);
 }
