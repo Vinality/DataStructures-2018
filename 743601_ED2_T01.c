@@ -130,6 +130,7 @@ void imprimirSecundario(Is* iproduct, Is* ibrand, Ir* icategory, Isf *iprice, in
 int main(){
   /* Arquivo */
 	int carregarArquivo = 0, nregistros = 0, ncat = 0;
+	Produto novo;
 	scanf("%d%*c", &carregarArquivo); /* 1 (sim) | 0 (nao) */
 	if (carregarArquivo)
 		nregistros = carregar_arquivo();
@@ -143,7 +144,8 @@ int main(){
 	criar_iprimary(iprimary, &nregistros);
 
 	/*Alocar e criar índices secundários*/
-
+	Is *ibrand = (Is *) malloc (MAX_REGISTROS * sizeof(Is));
+	Isf *iprice = (Isf *) malloc (MAX_REGISTROS * sizeof(Isf));
 	/* Execução do programa */
 	int opcao = 0;
 	while(1)
@@ -152,7 +154,12 @@ int main(){
 		switch(opcao)
 		{
 			case 1:
-				/*cadastro*/
+				novo = inserir_produto();
+				inserePrimaria(iprimary, &nregistros, novo.pk);
+				// insereSecundaria();
+				// ordenaPrimaria();
+				// ordenaSecundaria();
+				salvarProduto(ARQUIVO, novo);
 			break;
 			case 2:
 				/*alterar desconto*/
@@ -340,7 +347,7 @@ void gerarPrimaryKey(Produto *prod){
 	// maiusculo(prod->pk);
 }
 
-Produto inserir_produto(Ip *iprimary, int *nregistros){
+Produto inserir_produto(){
 	Produto novo;
 	scanf("\n%[^\n]s", novo.nome);
 	scanf("\n%[^\n]s", novo.marca);
@@ -350,8 +357,25 @@ Produto inserir_produto(Ip *iprimary, int *nregistros){
 	scanf("\n%[^\n]s", novo.desconto);
 	scanf("\n%[^\n]s", novo.categoria);
 	gerarPrimaryKey(&novo);
-
 	return novo;
+}
+
+void inserePrimaria(Ip *iprimary, int *nregistros, char *pk){
+	iprimary[*nregistros].pk = pk;
+	iprimary[*nregistros].rrn = *nregistros;
+	(*nregistros)++;
+}
+
+void salvarProduto(char *file, Produto p){
+	char temp[192];
+	sprintf(temp, "%s@%s@%s@%s@%s@%s@%s@", novo.nome, novo.marca, novo.data, novo.ano, novo.preco_base,
+	novo.desconto, novo.categoria);
+	if(strlen(temp) < 192){
+		for(int i = 0, i < 192 - strlen(temp); i++){
+			strcat(temp, "#");
+		}
+	}
+	//COLOCAR TEMPORARIA NA STRING FILE
 }
 
 void maiusculo(char *str){
