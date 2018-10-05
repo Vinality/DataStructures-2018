@@ -115,7 +115,7 @@ int exibir_registro(int rrn, char com_desconto);
 Produto recuperar_registro(int rrn);
 
 /* (Re)faz o índice respectivo */
-void criar_iprimary(Ip *indice_primario, int* nregistros);
+// void criar_iprimary(Ip *indice_primario, int* nregistros);
 
 /* Realiza os scanfs na struct Produto */
 void ler_entrada(char* registro, Produto *novo);
@@ -123,7 +123,25 @@ void ler_entrada(char* registro, Produto *novo);
 /* Rotina para impressao de indice secundario */
 void imprimirSecundario(Is* iproduct, Is* ibrand, Ir* icategory, Isf *iprice, int nregistros, int ncat);
 
+void salvarProduto(char *file, Produto p);
 
+void inserePrimaria(Ip *iprimary, int *nregistros, char *pk);
+
+Produto inserir_produto();
+
+void gerarChave(Produto *prod);
+
+void printaChaves(Ip *iprimary, int nregistros);
+
+void insereSecundariaNome(Is *iproduct, int nregistros, char *pk, char *nome);
+
+void insereSecundariaMarca(Is *ibrand, int nregistros, char *pk, char *marca);
+
+void insereSecundariaPreco(Is *iprice, int nregistros, char *pk, char *preco);
+
+void ordenaPrimaria(Ip *iprimary, int nregistros);
+
+int compara(const void *a, const void *b);
 /* ==========================================================================
  * ============================ FUNÇÃO PRINCIPAL ============================
  * =============================== NÃO ALTERAR ============================== */
@@ -141,11 +159,13 @@ int main(){
 		perror(MEMORIA_INSUFICIENTE);
 		exit(1);
 	}
-	criar_iprimary(iprimary, &nregistros);
+	// criar_iprimary(iprimary, &nregistros);
 
 	/*Alocar e criar índices secundários*/
 	Is *ibrand = (Is *) malloc (MAX_REGISTROS * sizeof(Is));
-	Isf *iprice = (Isf *) malloc (MAX_REGISTROS * sizeof(Isf));
+	Is *iproduct = (Is *) malloc (MAX_REGISTROS * sizeof(Is));
+	Is *iprice = (Is *) malloc (MAX_REGISTROS * sizeof(Is));
+	Isf *icategory = (Isf *) malloc (MAX_REGISTROS * sizeof(Isf));
 	/* Execução do programa */
 	int opcao = 0;
 	while(1)
@@ -156,10 +176,15 @@ int main(){
 			case 1:
 				novo = inserir_produto();
 				inserePrimaria(iprimary, &nregistros, novo.pk);
-				// insereSecundaria();
-				// ordenaPrimaria();
-				// ordenaSecundaria();
+				insereSecundariaNome(iproduct, nregistros, novo.pk, novo.nome);
+				insereSecundariaMarca(ibrand, nregistros, novo.pk, novo.marca);
+				insereSecundariaPreco(iprice, nregistros, novo.pk, novo.preco);
+				ordenaPrimaria(iprimary, nregistros);
+				// ordenaProduct();
+				// ordenaBrand();
+				// ordenaPreco();
 				salvarProduto(ARQUIVO, novo);
+				printaChaves(iprimary, nregistros);
 			break;
 			case 2:
 				/*alterar desconto*/
@@ -199,7 +224,7 @@ int main(){
 			break;
 			case 8:
 				/*imprime os índices secundários*/
-				imprimirSecundario(iproduct, ibrand, icategory, iprice, nregistros, ncat);
+				// imprimirSecundario(iproduct, ibrand, icategory, iprice, nregistros, ncat);
 			break;
 			case 9:
 	      		/*Liberar memória e finalizar o programa */
@@ -331,17 +356,17 @@ void imprimirSecundario(Is* iproduct, Is* ibrand, Ir* icategory, Isf *iprice, in
 	}
 }
 
-void gerarPrimaryKey(Produto *prod){
-	prod->pk[0] = prod.nome[0];
-	prod->pk[1] = prod.nome[1];
-	prod->pk[2] = prod.marca[0];
-	prod->pk[3] = prod.marca[1];
-	prod->pk[4] = prod.data[0];
-	prod->pk[5] = prod.data[1];
-	prod->pk[6] = prod.data[3];
-	prod->pk[7] = prod.data[4];
-	prod->pk[8] = prod.ano[2];
-	prod->pk[9] = prod.ano[3];
+void gerarChave(Produto *prod){
+	prod->pk[0] = prod->nome[0];
+	prod->pk[1] = prod->nome[1];
+	prod->pk[2] = prod->marca[0];
+	prod->pk[3] = prod->marca[1];
+	prod->pk[4] = prod->data[0];
+	prod->pk[5] = prod->data[1];
+	prod->pk[6] = prod->data[3];
+	prod->pk[7] = prod->data[4];
+	prod->pk[8] = prod->ano[0];
+	prod->pk[9] = prod->ano[1];
 	prod->pk[10] = '\0';
 
 	// maiusculo(prod->pk);
@@ -353,32 +378,63 @@ Produto inserir_produto(){
 	scanf("\n%[^\n]s", novo.marca);
 	scanf("\n%[^\n]s", novo.data);
 	scanf("\n%[^\n]s", novo.ano);
-	scanf("\n%[^\n]s", novo.preco_base);
+	scanf("\n%[^\n]s", novo.preco);
 	scanf("\n%[^\n]s", novo.desconto);
 	scanf("\n%[^\n]s", novo.categoria);
-	gerarPrimaryKey(&novo);
+	gerarChave(&novo);
 	return novo;
 }
 
 void inserePrimaria(Ip *iprimary, int *nregistros, char *pk){
-	iprimary[*nregistros].pk = pk;
+	strcpy(iprimary[*nregistros].pk, pk);
 	iprimary[*nregistros].rrn = *nregistros;
 	(*nregistros)++;
 }
 
+void insereSecundariaNome(Is *iproduct, int nregistros, char *pk, char *nome){
+	strcpy(iproduct[nregistros].pk, pk);
+	strcpy(iproduct[nregistros].string, nome);
+}
+
+void insereSecundariaMarca(Is *ibrand, int nregistros, char *pk, char *marca){
+	strcpy(ibrand[nregistros].pk, pk);
+	strcpy(ibrand[nregistros].string, marca);
+}
+
+void insereSecundariaPreco(Is *iprice, int nregistros, char *pk, char *preco){
+	strcpy(iprice[nregistros].pk, pk);
+	strcpy(iprice[nregistros].string, preco);
+}
+
 void salvarProduto(char *file, Produto p){
 	char temp[192];
-	sprintf(temp, "%s@%s@%s@%s@%s@%s@%s@", novo.nome, novo.marca, novo.data, novo.ano, novo.preco_base,
-	novo.desconto, novo.categoria);
+	sprintf(temp, "%s@%s@%s@%s@%s@%s@%s@", p.nome, p.marca, p.data, p.ano, p.preco,
+	p.desconto, p.categoria);
 	if(strlen(temp) < 192){
-		for(int i = 0, i < 192 - strlen(temp); i++){
+		for(int i = 0; i < 192 - strlen(temp); i++){
 			strcat(temp, "#");
 		}
 	}
-	//COLOCAR TEMPORARIA NA STRING FILE
+	strcat(file, temp);
 }
 
-void maiusculo(char *str){
-	for(int i = 0; str[i]!='\0'; i++)
-		str[i] = toupper(str[i]);
+void ordenaPrimaria(Ip *iprimary, int nregistros){
+	qsort(iprimary, nregistros, sizeof(Is), compara);
+}
+
+int compara(const void *a, const void *b){
+	Ip *aux1 = (Ip *)a;
+	Ip *aux2 = (Ip *)b;
+
+	return strcmp(aux1->pk, aux2->pk);
+}
+// void maiusculo(char *str){
+// 	for(int i = 0; str[i]!='\0'; i++)
+// 		str[i] = toupper(str[i]);
+// }
+
+void printaChaves(Ip *iprimary, int nregistros){
+	for(int i = 0; i<nregistros; i++){
+		printf("%s\n", (iprimary[i]).pk);
+	}
 }
