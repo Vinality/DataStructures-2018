@@ -137,11 +137,25 @@ void insereSecundariaNome(Is *iproduct, int nregistros, char *pk, char *nome);
 
 void insereSecundariaMarca(Is *ibrand, int nregistros, char *pk, char *marca);
 
-void insereSecundariaPreco(Is *iprice, int nregistros, char *pk, char *preco);
+void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco);
 
 void ordenaPrimaria(Ip *iprimary, int nregistros);
 
+void ordenaProduct(Is *iproduct, int nregistros);
+
+void ordenaBrand(Is *ibrand, int nregistros);
+
+void ordenaPreco(Isf *ipreco, int nregistros);
+
 int compara(const void *a, const void *b);
+
+int compara_product_brand(const void *a, const void *b);
+
+int compara_string_iprimary(const void *a, const void *b);
+
+int compara_preco(const void *a, const void *b);
+
+int buscarChave(Ip* iprimary, char *key, int nregistros);
 /* ==========================================================================
  * ============================ FUNÇÃO PRINCIPAL ============================
  * =============================== NÃO ALTERAR ============================== */
@@ -164,8 +178,8 @@ int main(){
 	/*Alocar e criar índices secundários*/
 	Is *ibrand = (Is *) malloc (MAX_REGISTROS * sizeof(Is));
 	Is *iproduct = (Is *) malloc (MAX_REGISTROS * sizeof(Is));
-	Is *iprice = (Is *) malloc (MAX_REGISTROS * sizeof(Is));
-	Isf *icategory = (Isf *) malloc (MAX_REGISTROS * sizeof(Isf));
+	Isf *iprice = (Isf *) malloc (MAX_REGISTROS * sizeof(Isf));
+	Ir *icategory = (Ir *) malloc (MAX_REGISTROS * sizeof(Ir));
 	/* Execução do programa */
 	int opcao = 0;
 	while(1)
@@ -175,16 +189,21 @@ int main(){
 		{
 			case 1:
 				novo = inserir_produto();
-				inserePrimaria(iprimary, &nregistros, novo.pk);
-				insereSecundariaNome(iproduct, nregistros, novo.pk, novo.nome);
-				insereSecundariaMarca(ibrand, nregistros, novo.pk, novo.marca);
-				insereSecundariaPreco(iprice, nregistros, novo.pk, novo.preco);
-				ordenaPrimaria(iprimary, nregistros);
-				// ordenaProduct();
-				// ordenaBrand();
-				// ordenaPreco();
-				salvarProduto(ARQUIVO, novo);
-				printaChaves(iprimary, nregistros);
+				if(buscarChave(iprimary, novo.pk, nregistros)){
+					printf(ERRO_PK_REPETIDA, novo.pk);
+				}
+				else{
+					inserePrimaria(iprimary, &nregistros, novo.pk);
+					insereSecundariaNome(iproduct, nregistros, novo.pk, novo.nome);
+					insereSecundariaMarca(ibrand, nregistros, novo.pk, novo.marca);
+					insereSecundariaPreco(iprice, nregistros, novo.pk, novo.preco);
+					ordenaPrimaria(iprimary, nregistros);
+					ordenaProduct(iproduct, nregistros);
+					ordenaBrand(ibrand, nregistros);
+					ordenaPreco(iprice, nregistros);
+					salvarProduto(ARQUIVO, novo);
+					printaChaves(iprimary, nregistros);
+				}
 			break;
 			case 2:
 				/*alterar desconto*/
@@ -401,9 +420,9 @@ void insereSecundariaMarca(Is *ibrand, int nregistros, char *pk, char *marca){
 	strcpy(ibrand[nregistros].string, marca);
 }
 
-void insereSecundariaPreco(Is *iprice, int nregistros, char *pk, char *preco){
+void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco){
 	strcpy(iprice[nregistros].pk, pk);
-	strcpy(iprice[nregistros].string, preco);
+	iprice[nregistros].price = atof(preco);
 }
 
 void salvarProduto(char *file, Produto p){
@@ -419,7 +438,19 @@ void salvarProduto(char *file, Produto p){
 }
 
 void ordenaPrimaria(Ip *iprimary, int nregistros){
-	qsort(iprimary, nregistros, sizeof(Is), compara);
+	qsort(iprimary, nregistros, sizeof(Ip), compara);
+}
+
+void ordenaProduct(Is *iproduct, int nregistros){
+	qsort(iproduct, nregistros, sizeof(Is), compara_product_brand);
+}
+
+void ordenaBrand(Is *ibrand, int nregistros){
+	qsort(ibrand, nregistros, sizeof(Is), compara_product_brand);
+}
+
+void ordenaPreco(Isf *iprice, int nregistros){
+	qsort(iprice, nregistros, sizeof(Isf), compara_preco);
 }
 
 int compara(const void *a, const void *b){
@@ -428,13 +459,44 @@ int compara(const void *a, const void *b){
 
 	return strcmp(aux1->pk, aux2->pk);
 }
-// void maiusculo(char *str){
-// 	for(int i = 0; str[i]!='\0'; i++)
-// 		str[i] = toupper(str[i]);
-// }
+
+int compara_product_brand(const void *a, const void *b){
+	Is *aux1 = (Is *)a;
+	Is *aux2 = (Is *)b;
+	int result;
+	result = strcmp(aux1->string, aux2->string);
+	if(result != 0)
+		return result;
+	else{
+		return strcmp(aux1->pk, aux2->pk);
+	}
+
+}
+
+int compara_preco(const void *a, const void *b){
+	Isf *aux1 = (Isf *)a;
+	Isf *aux2 = (Isf *)b;
+	if(aux1->price < aux2->price)
+		return -1;
+	else if(aux1->price > aux2->price)
+		return 1;
+	else
+		return strcmp(aux1->pk, aux2->pk);
+}
+
+int compara_string_iprimary(const void *a, const void *b){
+	return strcmp(a, ((const Ip *)b)->pk);
+}
 
 void printaChaves(Ip *iprimary, int nregistros){
 	for(int i = 0; i<nregistros; i++){
 		printf("%s\n", (iprimary[i]).pk);
 	}
+}
+
+int buscarChave(Ip* iprimary, char *key, int nregistros){
+	if((Ip*)bsearch(key, iprimary, nregistros, sizeof(Ip*), compara_string_iprimary))
+		return 1;
+	else
+		return 0;
 }
