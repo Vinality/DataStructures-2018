@@ -123,38 +123,50 @@ void ler_entrada(char* registro, Produto *novo);
 /* Rotina para impressao de indice secundario */
 void imprimirSecundario(Is* iproduct, Is* ibrand, Ir* icategory, Isf *iprice, int nregistros, int ncat);
 
+// Insere no arquivo de dados o produto e preenche com #
 void salvarProduto(char *file, Produto p);
 
+// Insere a chave primaria no vetor iprimary
 void inserePrimaria(Ip *iprimary, int *nregistros, char *pk);
 
+// Le do teclado os dados de um novo produto
 Produto inserir_produto();
 
+// Gera a chave primaria a partir dos dados inseridos
 void gerarChave(Produto *prod);
 
-void printaChaves(Ip *iprimary, int nregistros);
+/* ==========================================================================
+ * ========================= FUNCOES DE INSERCAO ============================
+ * ========================================================================== */
+void printaChaves(Ip *iprimary, int nregistros); // Imprime todas as chaves primarias do vetor iprimary
+void insereSecundariaNome(Is *iproduct, int nregistros, char *pk, char *nome); // Insere no vetor iproduct a chave secundaria
+void insereSecundariaMarca(Is *ibrand, int nregistros, char *pk, char *marca); // Insere no vetor ibrand a chave secundaria
+void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco); // Insere no vetor iprice a chave secundaria
+void insereSecundariaCat(Ir *icategory, int *ncat, char *categoria, char *pk); // Insere no vetor icategory um elemento de categoria
 
-void insereSecundariaNome(Is *iproduct, int nregistros, char *pk, char *nome);
+// Inserir elemento novo na lista ligada
+void inserirLista(ll *lista, char *pk);
 
-void insereSecundariaMarca(Is *ibrand, int nregistros, char *pk, char *marca);
+/* ==========================================================================
+ * ========================= FUNCOES DE ORDENACAO ===========================
+ * ========================================================================== */
+void ordenaPrimaria(Ip *iprimary, int nregistros); // Ordena o vetor de chaves primarias
+void ordenaProduct(Is *iproduct, int nregistros); // Ordena o vetor de chaves secundarias iproduct
+void ordenaBrand(Is *ibrand, int nregistros); // Ordena o vetor de chaves secundarias ibrand
+void ordenaPreco(Isf *iprice, int nregistros); // Ordena o vetor de chaves secundarias iprice
+void ordenaCategoria(Ir *icategory, int ncat);
 
-void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco);
-
-void ordenaPrimaria(Ip *iprimary, int nregistros);
-
-void ordenaProduct(Is *iproduct, int nregistros);
-
-void ordenaBrand(Is *ibrand, int nregistros);
-
-void ordenaPreco(Isf *ipreco, int nregistros);
-
+/* ==========================================================================
+ * ========================= FUNCOES DE COMPARACAO ==========================
+ * ========================================================================== */
+// Funcoes auxiliares de comparacao para o qsort e bsearch
 int compara(const void *a, const void *b);
+int comparaProductBrand(const void *a, const void *b);
+int comparaStringIprimary(const void *a, const void *b);
+int comparaPreco(const void *a, const void *b);
+int comparaCategoria(const void *a, const void *b);
 
-int compara_product_brand(const void *a, const void *b);
-
-int compara_string_iprimary(const void *a, const void *b);
-
-int compara_preco(const void *a, const void *b);
-
+// Funcao para buscar um elemento a partir de sua chave primaria
 int buscarChave(Ip* iprimary, char *key, int nregistros);
 /* ==========================================================================
  * ============================ FUNÇÃO PRINCIPAL ============================
@@ -197,10 +209,7 @@ int main(){
 					insereSecundariaNome(iproduct, nregistros, novo.pk, novo.nome);
 					insereSecundariaMarca(ibrand, nregistros, novo.pk, novo.marca);
 					insereSecundariaPreco(iprice, nregistros, novo.pk, novo.preco);
-					ordenaPrimaria(iprimary, nregistros);
-					ordenaProduct(iproduct, nregistros);
-					ordenaBrand(ibrand, nregistros);
-					ordenaPreco(iprice, nregistros);
+					insereSecundariaCat(icategory, &ncat, novo.categoria, novo.pk);
 					salvarProduto(ARQUIVO, novo);
 					printaChaves(iprimary, nregistros);
 				}
@@ -408,21 +417,71 @@ void inserePrimaria(Ip *iprimary, int *nregistros, char *pk){
 	strcpy(iprimary[*nregistros].pk, pk);
 	iprimary[*nregistros].rrn = *nregistros;
 	(*nregistros)++;
+	ordenaPrimaria(iprimary, *nregistros);
 }
 
 void insereSecundariaNome(Is *iproduct, int nregistros, char *pk, char *nome){
 	strcpy(iproduct[nregistros].pk, pk);
 	strcpy(iproduct[nregistros].string, nome);
+	ordenaProduct(iproduct, nregistros);
 }
 
 void insereSecundariaMarca(Is *ibrand, int nregistros, char *pk, char *marca){
 	strcpy(ibrand[nregistros].pk, pk);
 	strcpy(ibrand[nregistros].string, marca);
+	ordenaBrand(ibrand, nregistros);
 }
 
 void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco){
 	strcpy(iprice[nregistros].pk, pk);
 	iprice[nregistros].price = atof(preco);
+	ordenaPreco(iprice, nregistros);
+}
+
+void insereSecundariaCat(Ir *icategory, int *ncat, char *categoria, char *pk){
+	Ir* aux = (Ir*)bsearch(categoria, icategory, *ncat, sizeof(Ir), comparaCategoria);
+	if(aux){
+		inserirLista(aux->lista, pk);
+	}
+	else{
+		strcpy(icategory[*ncat].cat, categoria);
+		(*ncat)++;
+	}
+	ordenaCategoria(icategory, *ncat);
+}
+
+void inserirLista(ll *lista, char *pk){
+	ll *novo = (ll*)malloc(sizeof(ll));
+   	ll *aux = lista;
+   	strcpy(novo->pk, pk);
+
+   if(lista == NULL){
+	   novo->prox = aux;
+	   aux = novo;
+   }
+
+   else{
+	   if(strcmp(aux->pk, novo->pk) > 0){
+		   novo->prox = aux;
+		   aux = novo;
+		   return;
+	   }
+
+	   while(aux->prox != NULL && strcmp(aux->pk, novo->pk) != 0){
+		   if(strcmp(novo->pk, aux->prox->pk) < 0){
+			   novo->prox = aux->prox;
+			   aux->prox = novo;
+			   return;
+		   }
+		   else
+			   aux = aux->prox;
+	   }
+
+	   if(strcmp(aux->pk, novo->pk) != 0){
+		   novo->prox = aux->prox;
+		   aux->prox = novo;
+	   }
+   }
 }
 
 void salvarProduto(char *file, Produto p){
@@ -442,15 +501,19 @@ void ordenaPrimaria(Ip *iprimary, int nregistros){
 }
 
 void ordenaProduct(Is *iproduct, int nregistros){
-	qsort(iproduct, nregistros, sizeof(Is), compara_product_brand);
+	qsort(iproduct, nregistros, sizeof(Is), comparaProductBrand);
 }
 
 void ordenaBrand(Is *ibrand, int nregistros){
-	qsort(ibrand, nregistros, sizeof(Is), compara_product_brand);
+	qsort(ibrand, nregistros, sizeof(Is), comparaProductBrand);
 }
 
 void ordenaPreco(Isf *iprice, int nregistros){
-	qsort(iprice, nregistros, sizeof(Isf), compara_preco);
+	qsort(iprice, nregistros, sizeof(Isf), comparaPreco);
+}
+
+void ordenaCategoria(Ir *icategory, int ncat){
+	qsort(icategory, ncat, sizeof(Ir), comparaCategoria);
 }
 
 int compara(const void *a, const void *b){
@@ -460,7 +523,7 @@ int compara(const void *a, const void *b){
 	return strcmp(aux1->pk, aux2->pk);
 }
 
-int compara_product_brand(const void *a, const void *b){
+int comparaProductBrand(const void *a, const void *b){
 	Is *aux1 = (Is *)a;
 	Is *aux2 = (Is *)b;
 	int result;
@@ -473,7 +536,7 @@ int compara_product_brand(const void *a, const void *b){
 
 }
 
-int compara_preco(const void *a, const void *b){
+int comparaPreco(const void *a, const void *b){
 	Isf *aux1 = (Isf *)a;
 	Isf *aux2 = (Isf *)b;
 	if(aux1->price < aux2->price)
@@ -484,8 +547,12 @@ int compara_preco(const void *a, const void *b){
 		return strcmp(aux1->pk, aux2->pk);
 }
 
-int compara_string_iprimary(const void *a, const void *b){
-	return strcmp(a, ((const Ip *)b)->pk);
+int comparaStringIprimary(const void *a, const void *b){
+	return strcmp((char *)a, ((const Ip *)b)->pk);
+}
+
+int comparaCategoria(const void *a, const void *b){
+	return strcmp((char *)a, ((const Ir *)b)->cat);
 }
 
 void printaChaves(Ip *iprimary, int nregistros){
@@ -495,7 +562,7 @@ void printaChaves(Ip *iprimary, int nregistros){
 }
 
 int buscarChave(Ip* iprimary, char *key, int nregistros){
-	if((Ip*)bsearch(key, iprimary, nregistros, sizeof(Ip*), compara_string_iprimary))
+	if((Ip*)bsearch(key, iprimary, nregistros, sizeof(Ip), comparaStringIprimary))
 		return 1;
 	else
 		return 0;
