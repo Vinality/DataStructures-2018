@@ -252,7 +252,7 @@ int main(){
 			break;
 			case 8:
 				/*imprime os índices secundários*/
-				// imprimirSecundario(iproduct, ibrand, icategory, iprice, nregistros, ncat);
+				imprimirSecundario(iproduct, ibrand, icategory, iprice, nregistros, ncat);
 			break;
 			case 9:
 	      		/*Liberar memória e finalizar o programa */
@@ -421,20 +421,23 @@ void inserePrimaria(Ip *iprimary, int *nregistros, char *pk){
 }
 
 void insereSecundariaNome(Is *iproduct, int nregistros, char *pk, char *nome){
-	strcpy(iproduct[nregistros].pk, pk);
-	strcpy(iproduct[nregistros].string, nome);
+	strcpy(iproduct[nregistros-1].pk, pk);
+	strcpy(iproduct[nregistros-1].string, nome);
+	printf("PK E NOME %s %s\n", iproduct[nregistros].pk, iproduct[nregistros].string);
 	ordenaProduct(iproduct, nregistros);
 }
 
 void insereSecundariaMarca(Is *ibrand, int nregistros, char *pk, char *marca){
-	strcpy(ibrand[nregistros].pk, pk);
-	strcpy(ibrand[nregistros].string, marca);
+	strcpy(ibrand[nregistros-1].pk, pk);
+	strcpy(ibrand[nregistros-1].string, marca);
+	printf("PK E MARCA %s %s\n", ibrand[nregistros].pk, ibrand[nregistros].string);
 	ordenaBrand(ibrand, nregistros);
 }
 
 void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco){
-	strcpy(iprice[nregistros].pk, pk);
-	iprice[nregistros].price = atof(preco);
+	strcpy(iprice[nregistros-1].pk, pk);
+	iprice[nregistros-1].price = atof(preco);
+	printf("PK E PRECO %s %.2f\n", iprice[nregistros].pk, iprice[nregistros].price);
 	ordenaPreco(iprice, nregistros);
 }
 
