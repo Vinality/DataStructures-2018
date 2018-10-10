@@ -437,15 +437,32 @@ void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco){
 }
 
 void insereSecundariaCat(Ir *icategory, int *ncat, char *categoria, char *pk){
-	Ir* aux = (Ir*)bsearch(categoria, icategory, *ncat, sizeof(Ir), comparaCategoria);
-	if(aux){
-		inserirLista(&aux->lista, pk);
+	char *auxcat = categoria;
+	char *cat = strtok (auxcat, "|");
+
+	while(cat != NULL){
+		printf("%s ", cat);
+		Ir* aux = (Ir*)bsearch(cat, icategory, *ncat, sizeof(Ir), comparaCategoria);
+		if(aux != NULL){
+			printf("CASO REPETIDA\n");
+			inserirLista(&aux->lista, pk);
+		}
+		else{
+			strcpy(icategory[*ncat].cat, cat);
+			inserirLista(&icategory[*ncat].lista, pk);
+			(*ncat)++;
+		}
+		cat = strtok (NULL, "|");
 	}
-	else{
-		strcpy(icategory[*ncat].cat, categoria);
-		inserirLista(&icategory[*ncat].lista, pk);
-		(*ncat)++;
-	}
+	// Ir* aux = (Ir*)bsearch(categoria, icategory, *ncat, sizeof(Ir), comparaCategoria);
+	// if(aux){
+	// 	inserirLista(&aux->lista, pk);
+	// }
+	// else{
+	// 	strcpy(icategory[*ncat].cat, categoria);
+	// 	inserirLista(&icategory[*ncat].lista, pk);
+	// 	(*ncat)++;
+	// }
 	ordenaCategoria(icategory, *ncat);
 }
 
@@ -461,27 +478,34 @@ void inserirLista(ll **lista, char *pk){
    }
 
    else{
-	   if(strcmp(aux->pk, novo->pk) > 0){
-		   aux = novo;
-		   novo->prox = aux;
-		   return;
-	   }
+	   	aux = *lista;
+	  	while(aux->prox != NULL && strcmp(aux->prox->pk, novo->pk) < 0){
+		  	aux = aux->prox;
+	  	}
+	  	novo->prox = aux->prox;
+	  	aux->prox = novo;
+  	}
 
-	   while(aux->prox != NULL && strcmp(aux->pk, novo->pk) != 0){
-		   if(strcmp(novo->pk, aux->prox->pk) < 0){
-			   novo->prox = aux->prox;
-			   aux->prox = novo;
-			   return;
-		   }
-		   else
-			   aux = aux->prox;
-	   }
-
-	   if(strcmp(aux->pk, novo->pk) != 0){
-		   novo->prox = aux->prox;
-		   aux->prox = novo;
-	   }
-   }
+	   // if(strcmp(aux->pk, novo->pk) > 0){
+		//    novo->prox = aux;
+		//    aux = novo;
+		//    return;
+	   // }
+	   //
+	   // while(aux->prox != NULL && strcmp(aux->pk, novo->pk) != 0){
+		//    if(strcmp(novo->pk, aux->prox->pk) < 0){
+		// 	   novo->prox = aux->prox;
+		// 	   aux->prox = novo;
+		// 	   return;
+		//    }
+		//    else
+		// 	   aux = aux->prox;
+	   // }
+	   //
+	   // if(strcmp(aux->pk, novo->pk) != 0){
+		//    novo->prox = aux->prox;
+		//    aux->prox = novo;
+	   // }
 }
 
 void salvarProduto(char *file, Produto p){
