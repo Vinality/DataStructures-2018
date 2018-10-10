@@ -115,7 +115,7 @@ int exibir_registro(int rrn, char com_desconto);
 Produto recuperar_registro(int rrn);
 
 /* (Re)faz o índice respectivo */
-// void criar_iprimary(Ip *indice_primario, int* nregistros);
+void criar_iprimary(Ip *indice_primario, int* nregistros);
 
 /* Realiza os scanfs na struct Produto */
 void ler_entrada(char* registro, Produto *novo);
@@ -125,9 +125,6 @@ void imprimirSecundario(Is* iproduct, Is* ibrand, Ir* icategory, Isf *iprice, in
 
 // Insere no arquivo de dados o produto e preenche com #
 void salvarProduto(char *file, Produto p);
-
-// Insere a chave primaria no vetor iprimary
-void inserePrimaria(Ip *iprimary, int *nregistros, char *pk);
 
 // Le do teclado os dados de um novo produto
 Produto inserir_produto();
@@ -139,6 +136,7 @@ void gerarChave(Produto *prod);
  * ========================= FUNCOES DE INSERCAO ============================
  * ========================================================================== */
 void printaChaves(Ip *iprimary, int nregistros); // Imprime todas as chaves primarias do vetor iprimary
+void inserePrimaria(Ip *iprimary, int *nregistros, char *pk); // Insere a chave primaria no vetor iprimary
 void insereSecundariaNome(Is *iproduct, int nregistros, char *pk, char *nome); // Insere no vetor iproduct a chave secundaria
 void insereSecundariaMarca(Is *ibrand, int nregistros, char *pk, char *marca); // Insere no vetor ibrand a chave secundaria
 void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco); // Insere no vetor iprice a chave secundaria
@@ -168,6 +166,9 @@ int comparaCategoria(const void *a, const void *b);
 
 // Funcao para buscar um elemento a partir de sua chave primaria
 int buscarChave(Ip* iprimary, char *key, int nregistros);
+void buscarProduto(Ip *iprimary, Is *iproduct, Is *ibrand, Ir *icategory, int nregistros, int ncat);
+void imprimirProduto(Produto a);
+void listarProdutos(Ip *iprimary, Isf *iprice, Is *ibrand, Ir *icategory, int nregistros, int ncat);
 /* ==========================================================================
  * ============================ FUNÇÃO PRINCIPAL ============================
  * =============================== NÃO ALTERAR ============================== */
@@ -237,10 +238,12 @@ int main(){
 			case 4:
 				/*busca*/
 				printf(INICIO_BUSCA );
+				buscarProduto(iprimary, iproduct, ibrand, icategory, nregistros, ncat);
 			break;
 			case 5:
 				/*listagens*/
 				printf(INICIO_LISTAGEM);
+				listarProdutos(iprimary, iprice, ibrand, icategory, nregistros, ncat);
 			break;
 			case 6:
 				/*libera espaço*/
@@ -441,10 +444,8 @@ void insereSecundariaCat(Ir *icategory, int *ncat, char *categoria, char *pk){
 	char *cat = strtok (auxcat, "|");
 
 	while(cat != NULL){
-		printf("%s ", cat);
 		Ir* aux = (Ir*)bsearch(cat, icategory, *ncat, sizeof(Ir), comparaCategoria);
 		if(aux != NULL){
-			printf("CASO REPETIDA\n");
 			inserirLista(&aux->lista, pk);
 		}
 		else{
@@ -454,15 +455,6 @@ void insereSecundariaCat(Ir *icategory, int *ncat, char *categoria, char *pk){
 		}
 		cat = strtok (NULL, "|");
 	}
-	// Ir* aux = (Ir*)bsearch(categoria, icategory, *ncat, sizeof(Ir), comparaCategoria);
-	// if(aux){
-	// 	inserirLista(&aux->lista, pk);
-	// }
-	// else{
-	// 	strcpy(icategory[*ncat].cat, categoria);
-	// 	inserirLista(&icategory[*ncat].lista, pk);
-	// 	(*ncat)++;
-	// }
 	ordenaCategoria(icategory, *ncat);
 }
 
@@ -472,7 +464,6 @@ void inserirLista(ll **lista, char *pk){
    	strcpy(novo->pk, pk);
 
    if(*lista == NULL){
-	   printf("CASO LISTA VAZIA\n");
 	   novo->prox = *lista;
 	   *lista = novo;
    }
@@ -485,27 +476,6 @@ void inserirLista(ll **lista, char *pk){
 	  	novo->prox = aux->prox;
 	  	aux->prox = novo;
   	}
-
-	   // if(strcmp(aux->pk, novo->pk) > 0){
-		//    novo->prox = aux;
-		//    aux = novo;
-		//    return;
-	   // }
-	   //
-	   // while(aux->prox != NULL && strcmp(aux->pk, novo->pk) != 0){
-		//    if(strcmp(novo->pk, aux->prox->pk) < 0){
-		// 	   novo->prox = aux->prox;
-		// 	   aux->prox = novo;
-		// 	   return;
-		//    }
-		//    else
-		// 	   aux = aux->prox;
-	   // }
-	   //
-	   // if(strcmp(aux->pk, novo->pk) != 0){
-		//    novo->prox = aux->prox;
-		//    aux->prox = novo;
-	   // }
 }
 
 void salvarProduto(char *file, Produto p){
@@ -585,9 +555,110 @@ void printaChaves(Ip *iprimary, int nregistros){
 	}
 }
 
+void printaMarcas(Ip *iprimary, Is *ibrand, int nregistros){
+	Produto p;
+	Ip *ipaux;
+	for(int i = 0; i<nregistros; i++){
+		ipaux = (Ip*)bsearch(ibrand[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+		p = recuperar_registro(ipaux->rrn);
+		imprimirProduto(p);
+	}
+}
+
 int buscarChave(Ip* iprimary, char *key, int nregistros){
 	if((Ip*)bsearch(key, iprimary, nregistros, sizeof(Ip), comparaStringIprimary))
 		return 1;
 	else
 		return 0;
+}
+
+void criar_iprimary(Ip *iprimary, int *nregistros){
+	if(nregistros == 0)
+		return;
+}
+
+void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nregistros, int ncat){
+	int opBusca = 0;
+	Produto find;
+	Ip *ipaux;
+	Is *isaux;
+	// Ir *iraux;
+	char *aux = NULL;
+	// char *aux2 = NULL;
+	switch (opBusca){
+		case 1:
+			scanf("%s", aux);
+			ipaux = (Ip*)bsearch(aux, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+			if(ipaux){
+				find = recuperar_registro(ipaux->rrn);
+				imprimirProduto(find);
+			}
+			else
+				printf(REGISTRO_N_ENCONTRADO);
+			break;
+
+		case 2:
+			scanf("%s", aux);
+			isaux = (Is*)bsearch(aux, iproduct, nregistros, sizeof(Is), comparaProductBrand);
+			if(isaux){
+				ipaux = (Ip*)bsearch(isaux->pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+				find = recuperar_registro(ipaux->rrn);
+				imprimirProduto(find);
+			}
+			else
+				printf(REGISTRO_N_ENCONTRADO);
+			break;
+
+		case 3:
+			// scanf("%s", aux);
+			// scanf("%s", aux2);
+			// iraux = (Ir*)bsearch(aux2, icategory, ncat, sizeof(Ir), comparaCategoria);
+			// if(iraux){
+			// 	buscarMarcaCat(iraux->lista, aux);
+			// }
+			// else
+			// 	printf(REGISTRO_N_ENCONTRADO);
+			break;
+	}
+}
+
+void imprimirProduto(Produto a){
+	printf("%s\n", a.pk);
+	printf("%s\n", a.nome);
+	printf("%s\n", a.marca);
+	printf("%s\n", a.data);
+	printf("%s\n", a.ano);
+	printf("%s\n", a.preco);
+	printf("%s\n", a.desconto);
+	char *cat = strtok (a.categoria, "|");
+
+	while(cat != NULL){
+		printf("%s", cat);
+		cat = strtok (NULL, "|");
+		if(cat != NULL){
+			printf(", ");
+		}
+	}
+	printf("\n");
+}
+
+void listarProdutos(Ip *iprimary, Isf* iprice, Is *ibrand, Ir* icategory, int nregistros, int ncat){
+	int opListar = 0;
+	int i;
+	Produto p;
+	switch(opListar){
+		case 1:
+			for(i=0; i<nregistros; i++){
+				p = recuperar_registro(iprimary[i].rrn);
+				imprimirProduto(p);
+			}
+			break;
+
+		case 2:
+			break;
+
+		case 3:
+			printaMarcas(iprimary, ibrand, nregistros);
+			break;
+	}
 }
