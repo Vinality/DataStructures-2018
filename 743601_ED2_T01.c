@@ -145,7 +145,7 @@ void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco); 
 void insereSecundariaCat(Ir *icategory, int *ncat, char *categoria, char *pk); // Insere no vetor icategory um elemento de categoria
 
 // Inserir elemento novo na lista ligada
-void inserirLista(ll *lista, char *pk);
+void inserirLista(ll **lista, char *pk);
 
 /* ==========================================================================
  * ========================= FUNCOES DE ORDENACAO ===========================
@@ -396,8 +396,6 @@ void gerarChave(Produto *prod){
 	prod->pk[8] = prod->ano[0];
 	prod->pk[9] = prod->ano[1];
 	prod->pk[10] = '\0';
-
-	// maiusculo(prod->pk);
 }
 
 Produto inserir_produto(){
@@ -441,29 +439,31 @@ void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco){
 void insereSecundariaCat(Ir *icategory, int *ncat, char *categoria, char *pk){
 	Ir* aux = (Ir*)bsearch(categoria, icategory, *ncat, sizeof(Ir), comparaCategoria);
 	if(aux){
-		inserirLista(aux->lista, pk);
+		inserirLista(&aux->lista, pk);
 	}
 	else{
 		strcpy(icategory[*ncat].cat, categoria);
+		inserirLista(&icategory[*ncat].lista, pk);
 		(*ncat)++;
 	}
 	ordenaCategoria(icategory, *ncat);
 }
 
-void inserirLista(ll *lista, char *pk){
+void inserirLista(ll **lista, char *pk){
 	ll *novo = (ll*)malloc(sizeof(ll));
-   	ll *aux = lista;
+   	ll *aux = *lista;
    	strcpy(novo->pk, pk);
 
-   if(lista == NULL){
-	   novo->prox = aux;
-	   aux = novo;
+   if(*lista == NULL){
+	   printf("CASO LISTA VAZIA\n");
+	   novo->prox = *lista;
+	   *lista = novo;
    }
 
    else{
 	   if(strcmp(aux->pk, novo->pk) > 0){
-		   novo->prox = aux;
 		   aux = novo;
+		   novo->prox = aux;
 		   return;
 	   }
 
