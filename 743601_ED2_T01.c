@@ -647,7 +647,6 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 	Is *isaux;
 	Ir *iraux;
 	ll *listaux;
-	ll *listaux2;
 	char aux[TAM_PRIMARY_KEY];
 	char aux2[TAM_NOME];
 	char aux3[TAM_MARCA];
@@ -666,15 +665,20 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 				printf(REGISTRO_N_ENCONTRADO);
 			break;
 
-		case 2: // ARRUMAR O CASO EM QUE EXISTEM MAIS DE UM PRODUTO COM MESMO NOME
+		case 2:
 			scanf("%s", aux2);
-			isaux = (Is*)bsearch(aux2, iproduct, nregistros, sizeof(Is), comparaStringIsecondary);
-			if(isaux){
-				ipaux = (Ip*)bsearch(isaux->pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-				find = recuperar_registro(ipaux->rrn);
-				imprimirProduto(find);
+			isaux = iproduct;
+			for(int i = 0; i<nregistros; i++){
+				if(strcmp(isaux[i].string, aux2)==0){
+					ipaux = (Ip*)bsearch(isaux[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+					find = recuperar_registro(ipaux->rrn);
+					if(flag)
+						printf("\n");
+					imprimirProduto(find);
+					flag = 1;
+				}
 			}
-			else
+			if(!flag)
 				printf(REGISTRO_N_ENCONTRADO);
 			break;
 
@@ -685,20 +689,18 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 			if(iraux){
 				listaux = iraux->lista;
 				isaux = ibrand;
-				while(listaux != NULL){
-					for(int i = 0; i<nregistros; i++){
-						if(strcmp(isaux[i].string, aux3)==0){
-							listaux2 = iraux->lista;
-							while(listaux2 != NULL){
-								if(strcmp(listaux2->pk, isaux[i].pk)==0){
-									ipaux = (Ip*)bsearch(listaux2->pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-									find = recuperar_registro(ipaux->rrn);
-									if(flag)
-										printf("\n");
-									imprimirProduto(find);
-									flag = 1;
-								}
-								listaux2 = listaux2->prox;
+
+				for(int i = 0; i<nregistros; i++){
+					if(strcmp(isaux[i].string, aux3)==0){
+						listaux = iraux->lista;
+						while(listaux != NULL){
+							if(strcmp(listaux->pk, isaux[i].pk)==0){
+								ipaux = (Ip*)bsearch(listaux->pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+								find = recuperar_registro(ipaux->rrn);
+								if(flag)
+									printf("\n");
+								imprimirProduto(find);
+								flag = 1;
 							}
 							listaux = listaux->prox;
 						}
