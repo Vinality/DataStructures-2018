@@ -134,6 +134,7 @@ void gerarChave(Produto *prod);
 
 int remover(Ip* iprimary, int nregistros, char *file);
 
+int alterar(Ip *iprimary, int nregistros, char *file);
 /* ==========================================================================
  * ========================= FUNCOES DE INSERCAO ============================
  * ========================================================================== */
@@ -224,12 +225,10 @@ int main(){
 			case 2:
 				/*alterar desconto*/
 				printf(INICIO_ALTERACAO);
-				/*
-				if(alterar([args]))
+				if(alterar(iprimary, nregistros, ARQUIVO))
 					printf(SUCESSO);
 				else
 					printf(FALHA);
-				*/
 			break;
 			case 3:
 				/*excluir produto*/
@@ -580,6 +579,7 @@ void printaMarcas(Ip *iprimary, Is *ibrand, int nregistros){
 void printaPreco(Ip *iprimary, Isf *iprice, int nregistros){
 	Produto p;
 	Ip *ipaux;
+
 	for(int i = 0; i<nregistros; i++){
 		ipaux = (Ip*)bsearch(iprice[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
 		p = recuperar_registro(ipaux->rrn);
@@ -656,6 +656,7 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 		case 1:
 			scanf("%s", aux);
 			ipaux = (Ip*)bsearch(aux, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+
 			if(ipaux){
 				find = recuperar_registro(ipaux->rrn);
 				imprimirProduto(find);
@@ -668,6 +669,7 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 		case 2:
 			scanf("%s", aux2);
 			isaux = iproduct;
+
 			for(int i = 0; i<nregistros; i++){
 				if(strcmp(isaux[i].string, aux2)==0){
 					ipaux = (Ip*)bsearch(isaux[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
@@ -678,6 +680,7 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 					flag = 1;
 				}
 			}
+
 			if(!flag)
 				printf(REGISTRO_N_ENCONTRADO);
 			break;
@@ -686,6 +689,7 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 			scanf("%s", aux3);
 			scanf("%s", aux4);
 			iraux = (Ir*)bsearch(aux4, icategory, ncat, sizeof(Ir), comparaCategoria);
+
 			if(iraux){
 				listaux = iraux->lista;
 				isaux = ibrand;
@@ -739,6 +743,7 @@ void listarProdutos(Ip *iprimary, Isf* iprice, Is *ibrand, Ir* icategory, int nr
 	char auxcat[TAM_CATEGORIA];
 	Produto p;
 	scanf("%d", &opListar);
+
 	switch(opListar){
 		case 1:
 			for(i=0; i<nregistros; i++){
@@ -770,6 +775,7 @@ int remover(Ip* iprimary, int nregistros, char *file){
 	int pos;
 	scanf("%s", rem);
 	aux = (Ip*)bsearch(rem, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+
 	if(aux){
 		pos = (aux->rrn)*192;
 		file[pos] = '*';
@@ -778,4 +784,47 @@ int remover(Ip* iprimary, int nregistros, char *file){
 		return 1;
 	}
 	return 0;
+}
+
+int alterar(Ip *iprimary, int nregistros, char *file){
+	Ip *aux;
+	int valido = 0;
+	int tam = 0;
+	char altpk[TAM_PRIMARY_KEY];
+	char alt[TAM_DESCONTO];
+	scanf("%s", altpk);
+	aux = (Ip*)bsearch(altpk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+	if(!aux){
+		printf(REGISTRO_N_ENCONTRADO);
+		return 0;
+	}
+
+	while(!valido){
+		scanf("%s", alt);
+		if(strcmp(alt, "001") < 0 || strcmp(alt, "100") > 0)
+			printf(CAMPO_INVALIDO);
+		else
+			valido = 1;
+	}
+
+	char temp[193], *p;
+	strncpy(temp, file + ((aux->rrn)*192), 192);
+	tam = (aux->rrn)*192;
+	temp[192] = '\0';
+	p = strtok(temp,"@");
+	tam+=strlen(p);
+	p = strtok(NULL,"@");
+	tam+=strlen(p);
+	p = strtok(NULL,"@");
+	tam+=strlen(p);
+	p = strtok(NULL,"@");
+	tam+=strlen(p);
+	p = strtok(NULL,"@");
+	tam+=strlen(p);
+	tam+=5;
+	file[tam] = alt[0];
+	file[tam+1] = alt[1];
+	file[tam+2] = alt[2];
+
+	return 1;
 }
