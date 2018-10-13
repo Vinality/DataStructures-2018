@@ -634,20 +634,24 @@ int buscarChave(Ip* iprimary, char *key, int nregistros){
 		return 0;
 }
 
-void criar_iprimary(Ip *iprimary, int *nregistros){
+void criar_iprimary(Ip *iprimary, int *nregistros){ //TERMINAR DE IMPLEMENTAR
 	if(nregistros == 0)
 		return;
 }
 
 void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nregistros, int ncat){
 	int opBusca = 0;
+	int flag = 0;
 	Produto find;
 	Ip *ipaux;
 	Is *isaux;
-	// Ir *iraux;
+	Ir *iraux;
+	ll *listaux;
+	ll *listaux2;
 	char aux[TAM_PRIMARY_KEY];
 	char aux2[TAM_NOME];
-	// char *aux2 = NULL;
+	char aux3[TAM_MARCA];
+	char aux4[TAM_CATEGORIA];
 	scanf("%d", &opBusca);
 	switch (opBusca){
 		case 1:
@@ -662,7 +666,7 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 				printf(REGISTRO_N_ENCONTRADO);
 			break;
 
-		case 2:
+		case 2: // ARRUMAR O CASO EM QUE EXISTEM MAIS DE UM PRODUTO COM MESMO NOME
 			scanf("%s", aux2);
 			isaux = (Is*)bsearch(aux2, iproduct, nregistros, sizeof(Is), comparaStringIsecondary);
 			if(isaux){
@@ -675,14 +679,34 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 			break;
 
 		case 3:
-			// scanf("%s", aux);
-			// scanf("%s", aux2);
-			// iraux = (Ir*)bsearch(aux2, icategory, ncat, sizeof(Ir), comparaCategoria);
-			// if(iraux){
-			// 	buscarMarcaCat(iraux->lista, aux);
-			// }
-			// else
-			// 	printf(REGISTRO_N_ENCONTRADO);
+			scanf("%s", aux3);
+			scanf("%s", aux4);
+			iraux = (Ir*)bsearch(aux4, icategory, ncat, sizeof(Ir), comparaCategoria);
+			if(iraux){
+				listaux = iraux->lista;
+				isaux = ibrand;
+				while(listaux != NULL){
+					for(int i = 0; i<nregistros; i++){
+						if(strcmp(isaux[i].string, aux3)==0){
+							listaux2 = iraux->lista;
+							while(listaux2 != NULL){
+								if(strcmp(listaux2->pk, isaux[i].pk)==0){
+									ipaux = (Ip*)bsearch(listaux2->pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+									find = recuperar_registro(ipaux->rrn);
+									if(flag)
+										printf("\n");
+									imprimirProduto(find);
+									flag = 1;
+								}
+								listaux2 = listaux2->prox;
+							}
+							listaux = listaux->prox;
+						}
+					}
+				}
+			}
+			if(!flag)
+				printf(REGISTRO_N_ENCONTRADO);
 			break;
 	}
 }
@@ -725,7 +749,6 @@ void listarProdutos(Ip *iprimary, Isf* iprice, Is *ibrand, Ir* icategory, int nr
 
 		case 2:
 			scanf("%s", auxcat);
-			printf("ANTES DA FUNCAO\n");
 			printaCategoria(iprimary, icategory, nregistros, ncat, auxcat);
 			break;
 
