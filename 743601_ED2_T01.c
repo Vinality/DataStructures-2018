@@ -132,6 +132,8 @@ Produto inserir_produto();
 // Gera a chave primaria a partir dos dados inseridos
 void gerarChave(Produto *prod);
 
+int remover(Ip* iprimary, int nregistros, char *file);
+
 /* ==========================================================================
  * ========================= FUNCOES DE INSERCAO ============================
  * ========================================================================== */
@@ -232,12 +234,10 @@ int main(){
 			case 3:
 				/*excluir produto*/
 				printf(INICIO_EXCLUSAO);
-				/*
-				if(remover([args]))
+				if(remover(iprimary, nregistros, ARQUIVO))
 					printf(SUCESSO);
 				else
 					printf(FALHA);
-				*/
 			break;
 			case 4:
 				/*busca*/
@@ -561,7 +561,7 @@ int comparaCategoria(const void *a, const void *b){
 
 void printaChaves(Ip *iprimary, int nregistros){
 	for(int i = 0; i<nregistros; i++){
-		printf("%s\n", (iprimary[i]).pk);
+		printf("%s rrn: %d\n", (iprimary[i]).pk, (iprimary[i].rrn));
 	}
 }
 
@@ -762,4 +762,20 @@ void listarProdutos(Ip *iprimary, Isf* iprice, Is *ibrand, Ir* icategory, int nr
 			printaPreco(iprimary, iprice, nregistros);
 			break;
 	}
+}
+
+int remover(Ip* iprimary, int nregistros, char *file){
+	char rem[TAM_PRIMARY_KEY];
+	Ip *aux;
+	int pos;
+	scanf("%s", rem);
+	aux = (Ip*)bsearch(rem, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+	if(aux){
+		pos = (aux->rrn)*192;
+		file[pos] = '*';
+		file[pos+1] = '|';
+		aux->rrn = -1;
+		return 1;
+	}
+	return 0;
 }
