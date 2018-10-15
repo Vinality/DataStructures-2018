@@ -116,6 +116,9 @@ Produto recuperar_registro(int rrn);
 
 /* (Re)faz o índice respectivo */
 void criar_iprimary(Ip *indice_primario, int* nregistros);
+void criar_isecondary(Is *isecondary, int* nregistros);
+void criar_isfprice(Isf *iprice, int *nregistros);
+void criar_icategory(Ir *icategory, int *ncat);
 
 /* Realiza os scanfs na struct Produto */
 void ler_entrada(char* registro, Produto *novo);
@@ -132,9 +135,9 @@ Produto inserir_produto();
 // Gera a chave primaria a partir dos dados inseridos
 void gerarChave(Produto *prod);
 
-int remover(Ip* iprimary, int nregistros, char *file);
+int remover(Ip* iprimary, int nregistros);
 
-int alterar(Ip *iprimary, int nregistros, char *file);
+int alterar(Ip *iprimary, int nregistros);
 /* ==========================================================================
  * ========================= FUNCOES DE INSERCAO ============================
  * ========================================================================== */
@@ -193,13 +196,17 @@ int main(){
 		perror(MEMORIA_INSUFICIENTE);
 		exit(1);
 	}
-	// criar_iprimary(iprimary, &nregistros);
+	criar_iprimary(iprimary, &nregistros);
 
 	/*Alocar e criar índices secundários*/
 	Is *ibrand = (Is *) malloc (MAX_REGISTROS * sizeof(Is));
 	Is *iproduct = (Is *) malloc (MAX_REGISTROS * sizeof(Is));
 	Isf *iprice = (Isf *) malloc (MAX_REGISTROS * sizeof(Isf));
 	Ir *icategory = (Ir *) malloc (MAX_REGISTROS * sizeof(Ir));
+	criar_isecondary(iproduct, &nregistros);
+	criar_isecondary(ibrand, &nregistros);
+	criar_isfprice(iprice, &nregistros);
+	criar_icategory(icategory, &ncat);
 	/* Execução do programa */
 	int opcao = 0;
 	while(1)
@@ -225,7 +232,7 @@ int main(){
 			case 2:
 				/*alterar desconto*/
 				printf(INICIO_ALTERACAO);
-				if(alterar(iprimary, nregistros, ARQUIVO))
+				if(alterar(iprimary, nregistros))
 					printf(SUCESSO);
 				else
 					printf(FALHA);
@@ -233,7 +240,7 @@ int main(){
 			case 3:
 				/*excluir produto*/
 				printf(INICIO_EXCLUSAO);
-				if(remover(iprimary, nregistros, ARQUIVO))
+				if(remover(iprimary, nregistros))
 					printf(SUCESSO);
 				else
 					printf(FALHA);
@@ -637,6 +644,47 @@ int buscarChave(Ip* iprimary, char *key, int nregistros){
 void criar_iprimary(Ip *iprimary, int *nregistros){ //TERMINAR DE IMPLEMENTAR
 	if(nregistros == 0)
 		return;
+
+	Produto temp;
+	for(int i = 0; i < *nregistros; i++){
+		temp = recuperar_registro(i);
+		strcpy(iprimary[i].pk, temp.pk);
+		iprimary[i].rrn = i;
+	}
+	ordenaPrimaria(iprimary, *nregistros);
+}
+
+void criar_isecondary(Is *isecondary, int* nregistros){
+	if(nregistros == 0)
+		return;
+
+	Produto temp;
+	for(int i = 0; i < *nregistros; i++){
+		temp = recuperar_registro(i);
+		strcpy(isecondary[i].string, temp.nome);
+		strcpy(isecondary[i].pk, temp.pk);
+	}
+	ordenaProduct(isecondary, *nregistros);
+}
+
+void criar_isfprice(Isf *iprice, int *nregistros){
+	if(nregistros == 0)
+		return;
+
+	Produto temp;
+	for(int i = 0; i < *nregistros; i++){
+		temp = recuperar_registro(i);
+		iprice[i].price = atof(temp.preco);
+		strcpy(iprice[i].pk, temp.pk);
+	}
+	ordenaPreco(iprice, *nregistros);
+}
+
+void criar_icategory(Ir *icategory, int *ncat){
+	if(ncat == 0)
+		return;
+
+
 }
 
 void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nregistros, int ncat){
@@ -769,7 +817,7 @@ void listarProdutos(Ip *iprimary, Isf* iprice, Is *ibrand, Ir* icategory, int nr
 	}
 }
 
-int remover(Ip* iprimary, int nregistros, char *file){
+int remover(Ip* iprimary, int nregistros){
 	char rem[TAM_PRIMARY_KEY];
 	Ip *aux;
 	int pos;
@@ -778,15 +826,15 @@ int remover(Ip* iprimary, int nregistros, char *file){
 
 	if(aux){
 		pos = (aux->rrn)*192;
-		file[pos] = '*';
-		file[pos+1] = '|';
+		ARQUIVO[pos] = '*';
+		ARQUIVO[pos+1] = '|';
 		aux->rrn = -1;
 		return 1;
 	}
 	return 0;
 }
 
-int alterar(Ip *iprimary, int nregistros, char *file){
+int alterar(Ip *iprimary, int nregistros){
 	Ip *aux;
 	int valido = 0;
 	int tam = 0;
@@ -801,14 +849,14 @@ int alterar(Ip *iprimary, int nregistros, char *file){
 
 	while(!valido){
 		scanf("%s", alt);
-		if(strcmp(alt, "001") < 0 || strcmp(alt, "100") > 0)
+		if(strcmp(alt, "000") < 0 || strcmp(alt, "100") > 0)
 			printf(CAMPO_INVALIDO);
 		else
 			valido = 1;
 	}
 
 	char temp[193], *p;
-	strncpy(temp, file + ((aux->rrn)*192), 192);
+	strncpy(temp, ARQUIVO + ((aux->rrn)*192), 192);
 	tam = (aux->rrn)*192;
 	temp[192] = '\0';
 	p = strtok(temp,"@");
@@ -822,9 +870,9 @@ int alterar(Ip *iprimary, int nregistros, char *file){
 	p = strtok(NULL,"@");
 	tam+=strlen(p);
 	tam+=5;
-	file[tam] = alt[0];
-	file[tam+1] = alt[1];
-	file[tam+2] = alt[2];
+	ARQUIVO[tam] = alt[0];
+	ARQUIVO[tam+1] = alt[1];
+	ARQUIVO[tam+2] = alt[2];
 
 	return 1;
 }
