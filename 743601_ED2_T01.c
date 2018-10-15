@@ -116,9 +116,10 @@ Produto recuperar_registro(int rrn);
 
 /* (Re)faz o índice respectivo */
 void criar_iprimary(Ip *indice_primario, int* nregistros);
-void criar_isecondary(Is *isecondary, int* nregistros);
+void criar_iproduct(Is *isecondary, int* nregistros);
+void criar_ibrand(Is *isecondary, int* nregistros);
 void criar_isfprice(Isf *iprice, int *nregistros);
-void criar_icategory(Ir *icategory, int *ncat);
+void criar_icategory(Ir *icategory, int *ncat, int nregistros);
 
 /* Realiza os scanfs na struct Produto */
 void ler_entrada(char* registro, Produto *novo);
@@ -203,10 +204,10 @@ int main(){
 	Is *iproduct = (Is *) malloc (MAX_REGISTROS * sizeof(Is));
 	Isf *iprice = (Isf *) malloc (MAX_REGISTROS * sizeof(Isf));
 	Ir *icategory = (Ir *) malloc (MAX_REGISTROS * sizeof(Ir));
-	criar_isecondary(iproduct, &nregistros);
-	criar_isecondary(ibrand, &nregistros);
+	criar_iproduct(iproduct, &nregistros);
+	criar_ibrand(ibrand, &nregistros);
 	criar_isfprice(iprice, &nregistros);
-	criar_icategory(icategory, &ncat);
+	criar_icategory(icategory, &ncat, nregistros);
 	/* Execução do programa */
 	int opcao = 0;
 	while(1)
@@ -654,7 +655,7 @@ void criar_iprimary(Ip *iprimary, int *nregistros){ //TERMINAR DE IMPLEMENTAR
 	ordenaPrimaria(iprimary, *nregistros);
 }
 
-void criar_isecondary(Is *isecondary, int* nregistros){
+void criar_iproduct(Is *isecondary, int* nregistros){
 	if(nregistros == 0)
 		return;
 
@@ -662,6 +663,19 @@ void criar_isecondary(Is *isecondary, int* nregistros){
 	for(int i = 0; i < *nregistros; i++){
 		temp = recuperar_registro(i);
 		strcpy(isecondary[i].string, temp.nome);
+		strcpy(isecondary[i].pk, temp.pk);
+	}
+	ordenaProduct(isecondary, *nregistros);
+}
+
+void criar_ibrand(Is *isecondary, int* nregistros){
+	if(nregistros == 0)
+		return;
+
+	Produto temp;
+	for(int i = 0; i < *nregistros; i++){
+		temp = recuperar_registro(i);
+		strcpy(isecondary[i].string, temp.marca);
 		strcpy(isecondary[i].pk, temp.pk);
 	}
 	ordenaProduct(isecondary, *nregistros);
@@ -680,11 +694,15 @@ void criar_isfprice(Isf *iprice, int *nregistros){
 	ordenaPreco(iprice, *nregistros);
 }
 
-void criar_icategory(Ir *icategory, int *ncat){
-	if(ncat == 0)
+void criar_icategory(Ir *icategory, int *ncat, int nregistros){
+	if(nregistros == 0)
 		return;
 
-
+	Produto temp;
+	for(int i = 0; i < nregistros; i++){
+		temp = recuperar_registro(i);
+		insereSecundariaCat(icategory, ncat, temp.categoria, temp.pk);
+	}
 }
 
 void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nregistros, int ncat){
