@@ -39,7 +39,7 @@
 #define REGISTRO_N_ENCONTRADO 		"Registro(s) nao encontrado!\n"
 #define CAMPO_INVALIDO 				"Campo invalido! Informe novamente.\n"
 #define ERRO_PK_REPETIDA			"ERRO: Ja existe um registro com a chave primaria: %s.\n"
-#define ARQUIVO_VAZIO 				"Arquivo vazio!"
+#define ARQUIVO_VAZIO 				"Arquivo vazio!\n"
 #define INICIO_BUSCA 		 		"**********************BUSCAR**********************\n"
 #define INICIO_LISTAGEM  			"**********************LISTAR**********************\n"
 #define INICIO_ALTERACAO 			"**********************ALTERAR*********************\n"
@@ -122,7 +122,7 @@ void criar_isfprice(Isf *iprice, int *nregistros);
 void criar_icategory(Ir *icategory, int *ncat, int nregistros);
 
 /* Realiza os scanfs na struct Produto */
-void ler_entrada(char* registro, Produto *novo);
+// void ler_entrada(char* registro, Produto *novo);
 
 /* Rotina para impressao de indice secundario */
 void imprimirSecundario(Is* iproduct, Is* ibrand, Ir* icategory, Isf *iprice, int nregistros, int ncat);
@@ -138,15 +138,15 @@ void gerarChave(Produto *prod);
 
 int remover(Ip* iprimary, int nregistros);
 
-int alterar(Ip *iprimary, int nregistros);
+int alterar(Ip *iprimary, int nregistros, Isf *iprice);
 /* ==========================================================================
  * ========================= FUNCOES DE INSERCAO ============================
  * ========================================================================== */
-void printaChaves(Ip *iprimary, int nregistros); // Imprime todas as chaves primarias do vetor iprimary
+// void printaChaves(Ip *iprimary, int nregistros); // Imprime todas as chaves primarias do vetor iprimary
 void inserePrimaria(Ip *iprimary, int *nregistros, char *pk); // Insere a chave primaria no vetor iprimary
 void insereSecundariaNome(Is *iproduct, int nregistros, char *pk, char *nome); // Insere no vetor iproduct a chave secundaria
 void insereSecundariaMarca(Is *ibrand, int nregistros, char *pk, char *marca); // Insere no vetor ibrand a chave secundaria
-void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco); // Insere no vetor iprice a chave secundaria
+void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco, char *desconto); // Insere no vetor iprice a chave secundaria
 void insereSecundariaCat(Ir *icategory, int *ncat, char *categoria, char *pk); // Insere no vetor icategory um elemento de categoria
 
 // Inserir elemento novo na lista ligada
@@ -176,10 +176,14 @@ int comparaStringIsecondary(const void *a, const void *b);
 int buscarChave(Ip* iprimary, char *key, int nregistros);
 void buscarProduto(Ip *iprimary, Is *iproduct, Is *ibrand, Ir *icategory, int nregistros, int ncat);
 void imprimirProduto(Produto a);
+void imprimirProdutoSemAno(Produto a);
 void listarProdutos(Ip *iprimary, Isf *iprice, Is *ibrand, Ir *icategory, int nregistros, int ncat);
 void printaMarcas(Ip *iprimary, Is *ibrand, int nregistros);
 void printaPreco(Ip *iprimary, Isf *iprice, int nregistros);
 void printaCategoria(Ip *iprimary, Ir *icategory, int nregistros, int ncat, char *find);
+
+void limparArquivo(Ip *iprimary, int *nregistros, Is *iproduct, Is *ibrand, Isf *iprice, Ir *icategory, int *ncat);
+void liberarMemoria(Ip *iprimary, Is *iproduct, Is *ibrand, Isf *iprice, Ir *icategory, int nregistros, int ncat);
 /* ==========================================================================
  * ============================ FUNÇÃO PRINCIPAL ============================
  * =============================== NÃO ALTERAR ============================== */
@@ -224,16 +228,16 @@ int main(){
 					inserePrimaria(iprimary, &nregistros, novo.pk);
 					insereSecundariaNome(iproduct, nregistros, novo.pk, novo.nome);
 					insereSecundariaMarca(ibrand, nregistros, novo.pk, novo.marca);
-					insereSecundariaPreco(iprice, nregistros, novo.pk, novo.preco);
+					insereSecundariaPreco(iprice, nregistros, novo.pk, novo.preco, novo.desconto);
 					salvarProduto(ARQUIVO, novo);
 					insereSecundariaCat(icategory, &ncat, novo.categoria, novo.pk);
-					printaChaves(iprimary, nregistros);
+					// printaChaves(iprimary, nregistros);
 				}
 			break;
 			case 2:
 				/*alterar desconto*/
 				printf(INICIO_ALTERACAO);
-				if(alterar(iprimary, nregistros))
+				if(alterar(iprimary, nregistros, iprice))
 					printf(SUCESSO);
 				else
 					printf(FALHA);
@@ -258,6 +262,7 @@ int main(){
 			break;
 			case 6:
 				/*libera espaço*/
+				limparArquivo(iprimary, &nregistros, iproduct, ibrand, iprice, icategory, &ncat);
 			break;
 			case 7:
 				/*imprime o arquivo de dados*/
@@ -270,6 +275,7 @@ int main(){
 			break;
 			case 9:
 	      		/*Liberar memória e finalizar o programa */
+				liberarMemoria(iprimary, iproduct, ibrand, iprice, icategory, nregistros, ncat);
 				return 0;
 			break;
 			default:
@@ -444,9 +450,16 @@ void insereSecundariaMarca(Is *ibrand, int nregistros, char *pk, char *marca){
 	ordenaBrand(ibrand, nregistros);
 }
 
-void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco){
+void insereSecundariaPreco(Isf *iprice, int nregistros, char *pk, char *preco, char *desconto){
+	int desc = 0;
+	float precofinal = 0;
 	strcpy(iprice[nregistros-1].pk, pk);
-	iprice[nregistros-1].price = atof(preco);
+	sscanf(desconto,"%d",&desc);
+	sscanf(preco,"%f",&precofinal);
+	precofinal = (precofinal * (100-desc))/100;
+	precofinal = precofinal*100;
+	precofinal = ((int) precofinal)/ (float) 100;
+	iprice[nregistros-1].price = precofinal;
 	ordenaPreco(iprice, nregistros);
 }
 
@@ -474,7 +487,7 @@ void inserirLista(ll **lista, char *pk){
    	ll *aux = *lista;
    	strcpy(novo->pk, pk);
 
-   if(*lista == NULL){
+   if(*lista == NULL || strcmp((*lista)->pk, novo->pk) >= 0){
 	   novo->prox = *lista;
 	   *lista = novo;
    }
@@ -499,7 +512,8 @@ void salvarProduto(char *file, Produto p){
 			strcat(temp, "#");
 		}
 	}
-	strcat(file, temp);
+	if(file != NULL)
+		strcat(file, temp);
 }
 
 void ordenaPrimaria(Ip *iprimary, int nregistros){
@@ -565,72 +579,65 @@ int comparaCategoria(const void *a, const void *b){
 	return strcmp((char *)a, ((const Ir *)b)->cat);
 }
 
-
-void printaChaves(Ip *iprimary, int nregistros){
-	for(int i = 0; i<nregistros; i++){
-		printf("%s rrn: %d\n", (iprimary[i]).pk, (iprimary[i].rrn));
-	}
+int comparaPkIprice(const void *a, const void *b){
+	return strcmp((char *)a, ((const Isf *)b)->pk);
 }
 
+// void printaChaves(Ip *iprimary, int nregistros){
+// 	for(int i = 0; i<nregistros; i++){
+// 		printf("%s rrn: %d\n", (iprimary[i]).pk, (iprimary[i].rrn));
+// 	}
+// }
+
 void printaMarcas(Ip *iprimary, Is *ibrand, int nregistros){
-	Produto p;
 	Ip *ipaux;
+	int flag = 0;
 	for(int i = 0; i<nregistros; i++){
 		ipaux = (Ip*)bsearch(ibrand[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-		p = recuperar_registro(ipaux->rrn);
-		imprimirProduto(p);
-		if(i < nregistros-1)
+		if(flag){
 			printf("\n");
+			flag = 0;
+		}
+		if(ipaux->rrn != -1)
+			if(exibir_registro(ipaux->rrn, 0))
+				flag = 1;
 	}
 }
 
 void printaPreco(Ip *iprimary, Isf *iprice, int nregistros){
-	Produto p;
 	Ip *ipaux;
+	int flag = 0;
 
 	for(int i = 0; i<nregistros; i++){
 		ipaux = (Ip*)bsearch(iprice[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-		p = recuperar_registro(ipaux->rrn);
-		int desc = atoi(p.desconto);
-		float preco = atof(p.preco);
-		preco = preco * (100-desc);
-		preco = ((int) preco)/(float)100;
-		printf("%s\n", p.pk);
-		printf("%s\n", p.nome);
-		printf("%s\n", p.marca);
-		printf("%s\n", p.data);
-		printf("%s\n", p.ano);
-		printf("%.2f\n", preco);
-		char *cat = strtok (p.categoria, "|");
-
-		while(cat != NULL){
-			printf("%s", cat);
-			cat = strtok (NULL, "|");
-			if(cat != NULL)
-				printf(", ");
-		}
-		if(i < nregistros-1){
+		if(flag){
 			printf("\n");
-			printf("\n");
+			flag = 0;
 		}
+		if(ipaux->rrn != -1)
+			if(exibir_registro(ipaux->rrn, 1))
+				flag = 1;
 	}
-	printf("\n");
 }
 
 void printaCategoria(Ip *iprimary, Ir *icategory, int nregistros, int ncat, char *find){
-	Produto p;
 	Ir *iraux;
 	ll *aux = NULL;
+	int flag = 0;
 
 	iraux = (Ir*)bsearch(find, icategory, ncat, sizeof(Ir), comparaCategoria);
 	aux = iraux->lista;
 
 	while(aux != NULL){
 		Ip *ipaux = (Ip*)bsearch(aux->pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-		p = recuperar_registro(ipaux->rrn);
-		imprimirProduto(p);
-		if(aux->prox != NULL)
+		if(flag){
 			printf("\n");
+			flag = 0;
+		}
+		if(ipaux->rrn != -1)
+			if(exibir_registro(ipaux->rrn, 0))
+				flag = 1;
+
 		aux = aux->prox;
 	}
 }
@@ -642,7 +649,7 @@ int buscarChave(Ip* iprimary, char *key, int nregistros){
 		return 0;
 }
 
-void criar_iprimary(Ip *iprimary, int *nregistros){ //TERMINAR DE IMPLEMENTAR
+void criar_iprimary(Ip *iprimary, int *nregistros){
 	if(nregistros == 0)
 		return;
 
@@ -685,20 +692,36 @@ void criar_isfprice(Isf *iprice, int *nregistros){
 	if(nregistros == 0)
 		return;
 
+	int desc;
+	float precofinal;
 	Produto temp;
 	for(int i = 0; i < *nregistros; i++){
 		temp = recuperar_registro(i);
-		iprice[i].price = atof(temp.preco);
+		sscanf(temp.desconto,"%d",&desc);
+		sscanf(temp.preco,"%f",&precofinal);
+		precofinal = (precofinal *  (100-desc))/100.0;
+		precofinal = precofinal*100;
+		precofinal = ((int) precofinal)/ (float) 100;
+		iprice[i].price = precofinal;
 		strcpy(iprice[i].pk, temp.pk);
 	}
 	ordenaPreco(iprice, *nregistros);
 }
 
 void criar_icategory(Ir *icategory, int *ncat, int nregistros){
-	if(nregistros == 0)
+	if(nregistros == 0 && *ncat == 0)
 		return;
 
+	if(*ncat != 0){
+		for(int i = 0; i < *ncat; i++){
+			free(icategory[i].lista);
+			icategory[i].lista = NULL;
+			strcpy(icategory[i].cat, "\0");
+		}
+	}
+
 	Produto temp;
+	*ncat = 0;
 	for(int i = 0; i < nregistros; i++){
 		temp = recuperar_registro(i);
 		insereSecundariaCat(icategory, ncat, temp.categoria, temp.pk);
@@ -708,7 +731,6 @@ void criar_icategory(Ir *icategory, int *ncat, int nregistros){
 void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nregistros, int ncat){
 	int opBusca = 0;
 	int flag = 0;
-	Produto find;
 	Ip *ipaux;
 	Is *isaux;
 	Ir *iraux;
@@ -723,26 +745,23 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 			scanf("%s", aux);
 			ipaux = (Ip*)bsearch(aux, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
 
-			if(ipaux){
-				find = recuperar_registro(ipaux->rrn);
-				imprimirProduto(find);
-				printf("\n");
+			if(ipaux && ipaux->rrn != -1){
+				exibir_registro(ipaux->rrn, 0);
 			}
 			else
 				printf(REGISTRO_N_ENCONTRADO);
 			break;
 
 		case 2:
-			scanf("%s", aux2);
+			scanf("%*c%[^\n]s", aux2);
 			isaux = iproduct;
 
 			for(int i = 0; i<nregistros; i++){
 				if(strcmp(isaux[i].string, aux2)==0){
 					ipaux = (Ip*)bsearch(isaux[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-					find = recuperar_registro(ipaux->rrn);
 					if(flag)
 						printf("\n");
-					imprimirProduto(find);
+					exibir_registro(ipaux->rrn, 0);
 					flag = 1;
 				}
 			}
@@ -766,10 +785,9 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 						while(listaux != NULL){
 							if(strcmp(listaux->pk, isaux[i].pk)==0){
 								ipaux = (Ip*)bsearch(listaux->pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-								find = recuperar_registro(ipaux->rrn);
 								if(flag)
 									printf("\n");
-								imprimirProduto(find);
+								exibir_registro(ipaux->rrn, 0);
 								flag = 1;
 							}
 							listaux = listaux->prox;
@@ -783,41 +801,30 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 	}
 }
 
-void imprimirProduto(Produto a){
-	printf("%s\n", a.pk);
-	printf("%s\n", a.nome);
-	printf("%s\n", a.marca);
-	printf("%s\n", a.data);
-	printf("%s\n", a.ano);
-	printf("%s\n", a.preco);
-	printf("%s\n", a.desconto);
-	char *cat = strtok (a.categoria, "|");
-
-	while(cat != NULL){
-		printf("%s", cat);
-		cat = strtok (NULL, "|");
-		if(cat != NULL){
-			printf(", ");
-		}
-	}
-	printf("\n");
-}
-
 void listarProdutos(Ip *iprimary, Isf* iprice, Is *ibrand, Ir* icategory, int nregistros, int ncat){
 	int opListar = 0;
 	int i;
+	int flag = 0;
+	int flag2 = 0;
 	char auxcat[TAM_CATEGORIA];
-	Produto p;
 	scanf("%d", &opListar);
 
 	switch(opListar){
 		case 1:
 			for(i=0; i<nregistros; i++){
-				p = recuperar_registro(iprimary[i].rrn);
-				imprimirProduto(p);
-				if(i < nregistros-1)
+				if(flag){
 					printf("\n");
+					flag = 0;
+				}
+				if(iprimary[i].rrn != -1){
+					if(exibir_registro(iprimary[i].rrn,0)){
+						flag = 1;
+						flag2 = 1;
+					}
+				}
 			}
+			if(!flag2)
+				printf(REGISTRO_N_ENCONTRADO);
 			break;
 
 		case 2:
@@ -842,17 +849,19 @@ int remover(Ip* iprimary, int nregistros){
 	scanf("%s", rem);
 	aux = (Ip*)bsearch(rem, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
 
-	if(aux){
+	if(aux && aux->rrn != -1){
 		pos = (aux->rrn)*192;
 		ARQUIVO[pos] = '*';
 		ARQUIVO[pos+1] = '|';
 		aux->rrn = -1;
 		return 1;
 	}
+	else
+		printf(REGISTRO_N_ENCONTRADO);
 	return 0;
 }
 
-int alterar(Ip *iprimary, int nregistros){
+int alterar(Ip *iprimary, int nregistros, Isf *iprice){
 	Ip *aux;
 	int valido = 0;
 	int tam = 0;
@@ -873,6 +882,19 @@ int alterar(Ip *iprimary, int nregistros){
 			valido = 1;
 	}
 
+	Produto prod;
+	prod = recuperar_registro(aux->rrn);
+	float precofinal = atof(prod.preco);
+	int desc = atoi(alt);
+	precofinal = (precofinal *  (100-desc))/100.0;
+	precofinal = precofinal*100;
+	precofinal = ((int) precofinal)/ (float) 100;
+
+	for(int i = 0; i < nregistros; i++){
+		if(strcmp(altpk, iprice[i].pk)==0)
+			iprice[i].price = precofinal;
+	}
+
 	char temp[193], *p;
 	strncpy(temp, ARQUIVO + ((aux->rrn)*192), 192);
 	tam = (aux->rrn)*192;
@@ -891,6 +913,49 @@ int alterar(Ip *iprimary, int nregistros){
 	ARQUIVO[tam] = alt[0];
 	ARQUIVO[tam+1] = alt[1];
 	ARQUIVO[tam+2] = alt[2];
-
 	return 1;
+}
+
+void limparArquivo(Ip *iprimary, int *nregistros, Is *iproduct, Is *ibrand, Isf *iprice, Ir *icategory, int *ncat){
+	char arq[TAM_ARQUIVO];
+	int count = 0;
+	Produto temp;
+	strcpy(arq, "");
+	for(int i = 0; i < *nregistros; i++){
+		temp = recuperar_registro(i);
+		if(!(temp.nome[0]=='*' && temp.nome[1]=='|')){
+			salvarProduto(arq, temp);
+			count++;
+		}
+	}
+	(*nregistros)=count;
+	arq[sizeof(arq)-1] = '\0';
+	strcpy(ARQUIVO, arq);
+
+	criar_iprimary(iprimary, nregistros);
+	criar_iproduct(iproduct, nregistros);
+	criar_ibrand(ibrand, nregistros);
+	criar_isfprice(iprice, nregistros);
+	criar_icategory(icategory, ncat, *nregistros);
+}
+
+void liberarMemoria(Ip *iprimary, Is *iproduct, Is *ibrand, Isf *iprice, Ir *icategory, int nregistros, int ncat){
+	int i;
+
+	free(iprimary);
+	free(iproduct);
+	free(ibrand);
+	free(iprice);
+
+	for(i = 0; i < ncat; i++){
+		ll *node = icategory[i].lista;
+		ll *temp;
+		while(node != NULL){
+		    temp = node;
+		    node = node->prox;
+		    free(temp);
+		}
+		icategory[i].lista = NULL;
+	}
+	free(icategory);
 }
