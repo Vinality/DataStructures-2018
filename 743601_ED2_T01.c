@@ -593,14 +593,17 @@ void printaMarcas(Ip *iprimary, Is *ibrand, int nregistros){
 	Ip *ipaux;
 	int flag = 0;
 	for(int i = 0; i<nregistros; i++){
-		ipaux = (Ip*)bsearch(ibrand[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-		if(flag){
-			printf("\n");
-			flag = 0;
+		for(int j = 0; j<nregistros; j++){
+			if(strcmp(ibrand[i].pk, iprimary[j].pk)==0){
+				ipaux = &iprimary[j];
+				if(flag){
+					printf("\n");
+					flag = 0;
+				}
+				if(exibir_registro(ipaux->rrn, 0))
+					flag = 1;
+			}
 		}
-		if(ipaux->rrn != -1)
-			if(exibir_registro(ipaux->rrn, 0))
-				flag = 1;
 	}
 }
 
@@ -636,6 +639,11 @@ void printaCategoria(Ip *iprimary, Ir *icategory, int nregistros, int ncat, char
 	int flag = 0;
 
 	iraux = (Ir*)bsearch(find, icategory, ncat, sizeof(Ir), comparaCategoria);
+	if(!iraux){
+		printf(REGISTRO_N_ENCONTRADO);
+		return;
+	}
+
 	aux = iraux->lista;
 
 	while(aux != NULL){
@@ -772,7 +780,6 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 					for(int j = 0; j<nregistros; j++){
 						if(strcmp(isaux[i].pk, iprimary[j].pk) == 0){
 							ipaux = &iprimary[j];
-					// ipaux = (Ip*)bsearch(isaux[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
 							if(flag && ipaux->rrn != -1){
 								printf("\n");
 								flag = 0;
@@ -780,8 +787,6 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 							if(exibir_registro(ipaux->rrn, 0))
 								flag = 1;
 						}
-						if(flag)
-							break;
 					}
 				}
 			}
@@ -801,7 +806,7 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 
 				for(int i = 0; i<nregistros; i++){
 					if(strcmp(isaux[i].string, aux3)==0){
-						// listaux = iraux->lista;
+						listaux = iraux->lista;
 						while(listaux != NULL){
 							if(strcmp(listaux->pk, isaux[i].pk)==0){
 								for(int j = 0; j<nregistros; j++){
@@ -814,10 +819,8 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 										if(exibir_registro(ipaux->rrn, 0))
 											flag = 1;
 									}
-
-									if(flag)
-										break;
-							// ipaux = (Ip*)bsearch(listaux->pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+									// if(flag)
+									// 	break;
 								}
 							}
 							listaux = listaux->prox;
@@ -989,3 +992,5 @@ void liberarMemoria(Ip *iprimary, Is *iproduct, Is *ibrand, Isf *iprice, Ir *ica
 	}
 	free(icategory);
 }
+
+//TODO caso 19 bugado
