@@ -609,14 +609,24 @@ void printaPreco(Ip *iprimary, Isf *iprice, int nregistros){
 	int flag = 0;
 
 	for(int i = 0; i<nregistros; i++){
-		ipaux = (Ip*)bsearch(iprice[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-		if(flag){
-			printf("\n");
-			flag = 0;
+		for(int j = 0; j<nregistros; j++){
+			if(strcmp(iprice[i].pk, iprimary[j].pk)==0){
+				ipaux = &iprimary[j];
+				if(flag && ipaux->rrn != -1){
+					printf("\n");
+					flag = 0;
+				}
+				if(exibir_registro(ipaux->rrn, 1))
+					flag = 1;
+			}
 		}
-		if(ipaux->rrn != -1)
-			if(exibir_registro(ipaux->rrn, 1))
-				flag = 1;
+		// ipaux = (Ip*)bsearch(iprice[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+		// if(flag){
+		// 	printf("\n");
+		// 	flag = 0;
+		// }
+		// if(exibir_registro(ipaux->rrn, 1))
+		// 	flag = 1;
 	}
 }
 
@@ -634,16 +644,17 @@ void printaCategoria(Ip *iprimary, Ir *icategory, int nregistros, int ncat, char
 			printf("\n");
 			flag = 0;
 		}
-		if(ipaux->rrn != -1)
-			if(exibir_registro(ipaux->rrn, 0))
-				flag = 1;
+		if(exibir_registro(ipaux->rrn, 0))
+			flag = 1;
 
 		aux = aux->prox;
 	}
 }
 
 int buscarChave(Ip* iprimary, char *key, int nregistros){
-	if((Ip*)bsearch(key, iprimary, nregistros, sizeof(Ip), comparaStringIprimary))
+	Ip *aux;
+	aux = (Ip*)bsearch(key, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+	if(aux && aux->rrn != -1)
 		return 1;
 	else
 		return 0;
@@ -758,11 +769,20 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 
 			for(int i = 0; i<nregistros; i++){
 				if(strcmp(isaux[i].string, aux2)==0){
-					ipaux = (Ip*)bsearch(isaux[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-					if(flag)
-						printf("\n");
-					exibir_registro(ipaux->rrn, 0);
-					flag = 1;
+					for(int j = 0; j<nregistros; j++){
+						if(strcmp(isaux[i].pk, iprimary[j].pk) == 0){
+							ipaux = &iprimary[j];
+					// ipaux = (Ip*)bsearch(isaux[i].pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+							if(flag && ipaux->rrn != -1){
+								printf("\n");
+								flag = 0;
+							}
+							if(exibir_registro(ipaux->rrn, 0))
+								flag = 1;
+						}
+						if(flag)
+							break;
+					}
 				}
 			}
 
@@ -781,14 +801,24 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 
 				for(int i = 0; i<nregistros; i++){
 					if(strcmp(isaux[i].string, aux3)==0){
-						listaux = iraux->lista;
+						// listaux = iraux->lista;
 						while(listaux != NULL){
 							if(strcmp(listaux->pk, isaux[i].pk)==0){
-								ipaux = (Ip*)bsearch(listaux->pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-								if(flag)
-									printf("\n");
-								exibir_registro(ipaux->rrn, 0);
-								flag = 1;
+								for(int j = 0; j<nregistros; j++){
+									if(strcmp(isaux[i].pk, iprimary[j].pk)==0){
+										ipaux = &iprimary[j];
+										if(flag && ipaux->rrn != -1){
+											printf("\n");
+											flag = 0;
+										}
+										if(exibir_registro(ipaux->rrn, 0))
+											flag = 1;
+									}
+
+									if(flag)
+										break;
+							// ipaux = (Ip*)bsearch(listaux->pk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+								}
 							}
 							listaux = listaux->prox;
 						}
@@ -816,11 +846,9 @@ void listarProdutos(Ip *iprimary, Isf* iprice, Is *ibrand, Ir* icategory, int nr
 					printf("\n");
 					flag = 0;
 				}
-				if(iprimary[i].rrn != -1){
-					if(exibir_registro(iprimary[i].rrn,0)){
-						flag = 1;
-						flag2 = 1;
-					}
+				if(exibir_registro(iprimary[i].rrn,0)){
+					flag = 1;
+					flag2 = 1;
 				}
 			}
 			if(!flag2)
@@ -869,7 +897,7 @@ int alterar(Ip *iprimary, int nregistros, Isf *iprice){
 	char alt[TAM_DESCONTO];
 	scanf("%s", altpk);
 	aux = (Ip*)bsearch(altpk, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-	if(!aux){
+	if(!aux || aux->rrn == -1){
 		printf(REGISTRO_N_ENCONTRADO);
 		return 0;
 	}
@@ -894,6 +922,8 @@ int alterar(Ip *iprimary, int nregistros, Isf *iprice){
 		if(strcmp(altpk, iprice[i].pk)==0)
 			iprice[i].price = precofinal;
 	}
+
+	ordenaPreco(iprice, nregistros);
 
 	char temp[193], *p;
 	strncpy(temp, ARQUIVO + ((aux->rrn)*192), 192);
