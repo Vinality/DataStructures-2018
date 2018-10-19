@@ -267,7 +267,10 @@ int main(){
 			case 7:
 				/*imprime o arquivo de dados*/
 				printf(INICIO_ARQUIVO);
-				printf("%s\n", ARQUIVO);
+				if(nregistros == 0)
+					printf(ARQUIVO_VAZIO);
+				else
+					printf("%s\n", ARQUIVO);
 			break;
 			case 8:
 				/*imprime os índices secundários*/
@@ -476,6 +479,7 @@ void insereSecundariaCat(Ir *icategory, int *ncat, char *categoria, char *pk){
 			strcpy(icategory[*ncat].cat, cat);
 			inserirLista(&icategory[*ncat].lista, pk);
 			(*ncat)++;
+			ordenaCategoria(icategory, *ncat);
 		}
 		cat = strtok (NULL, "|");
 	}
@@ -639,6 +643,14 @@ void printaCategoria(Ip *iprimary, Ir *icategory, int nregistros, int ncat, char
 	int flag = 0;
 
 	iraux = (Ir*)bsearch(find, icategory, ncat, sizeof(Ir), comparaCategoria);
+	// for(int i = 0; i<ncat; i++){
+	// 	printf("comparando: %s e %s\n", icategory[i].cat, find);
+	// 	if(strcmp(icategory[i].cat, find)==0){
+	// 		iraux = &icategory[i];
+	// 		break;
+	// 	}
+	// }
+
 	if(!iraux){
 		printf(REGISTRO_N_ENCONTRADO);
 		return;
@@ -660,12 +672,12 @@ void printaCategoria(Ip *iprimary, Ir *icategory, int nregistros, int ncat, char
 }
 
 int buscarChave(Ip* iprimary, char *key, int nregistros){
-	Ip *aux;
-	aux = (Ip*)bsearch(key, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
-	if(aux && aux->rrn != -1)
-		return 1;
-	else
-		return 0;
+	for(int i = 0; i<nregistros; i++){
+		if(strcmp(iprimary[i].pk, key)==0)
+			if(iprimary[i].rrn != -1)
+				return 1;
+	}
+	return 0;
 }
 
 void criar_iprimary(Ip *iprimary, int *nregistros){
@@ -796,8 +808,8 @@ void buscarProduto(Ip *iprimary, Is* iproduct, Is *ibrand, Ir* icategory, int nr
 			break;
 
 		case 3:
-			scanf("%s", aux3);
-			scanf("%s", aux4);
+			scanf("\n%[^\n]s", aux3);
+			scanf("\n%[^\n]s", aux4);
 			iraux = (Ir*)bsearch(aux4, icategory, ncat, sizeof(Ir), comparaCategoria);
 
 			if(iraux){
@@ -859,7 +871,7 @@ void listarProdutos(Ip *iprimary, Isf* iprice, Is *ibrand, Ir* icategory, int nr
 			break;
 
 		case 2:
-			scanf("%s", auxcat);
+			scanf("\n%[^\n]s", auxcat);
 			printaCategoria(iprimary, icategory, nregistros, ncat, auxcat);
 			break;
 
@@ -875,18 +887,30 @@ void listarProdutos(Ip *iprimary, Isf* iprice, Is *ibrand, Ir* icategory, int nr
 
 int remover(Ip* iprimary, int nregistros){
 	char rem[TAM_PRIMARY_KEY];
-	Ip *aux;
+	// Ip *aux;
+	int flag = 0;
 	int pos;
 	scanf("%s", rem);
-	aux = (Ip*)bsearch(rem, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
+	// aux = (Ip*)bsearch(rem, iprimary, nregistros, sizeof(Ip), comparaStringIprimary);
 
-	if(aux && aux->rrn != -1){
-		pos = (aux->rrn)*192;
-		ARQUIVO[pos] = '*';
-		ARQUIVO[pos+1] = '|';
-		aux->rrn = -1;
-		return 1;
+	for(int i = 0; i<nregistros; i++){
+		if(strcmp(iprimary[i].pk, rem)==0 && iprimary[i].rrn != -1){
+			pos = (iprimary[i].rrn)*192;
+			ARQUIVO[pos] = '*';
+			ARQUIVO[pos+1] = '|';
+			iprimary[i].rrn = -1;
+			flag = 1;
+		}
 	}
+	// if(aux && aux->rrn != -1){
+	// 	pos = (aux->rrn)*192;
+	// 	ARQUIVO[pos] = '*';
+	// 	ARQUIVO[pos+1] = '|';
+	// 	aux->rrn = -1;
+	// 	return 1;
+	// }
+	if(flag)
+		return 1;
 	else
 		printf(REGISTRO_N_ENCONTRADO);
 	return 0;
@@ -992,5 +1016,3 @@ void liberarMemoria(Ip *iprimary, Is *iproduct, Is *ibrand, Isf *iprice, Ir *ica
 	}
 	free(icategory);
 }
-
-//TODO caso 19 bugado
