@@ -183,7 +183,7 @@ int main()
 					imprimir_tabela(tabela);
 					break;
 				case 6:
-					// liberar_tabela(&tabela);
+					liberar_tabela(&tabela);
 					break;
 				case 10:
 					printf(INICIO_ARQUIVO);
@@ -215,7 +215,6 @@ short hash(const char* chave, int tam){
 	for(int i = 1; i <= 8; i++){
 		soma += i*f(chave[i-1]);
 	}
-	printf("TAMANHO: %d\n", tam);
 	return soma%tam;
 }
 
@@ -344,6 +343,7 @@ void criar_tabela(Hashtable *tabela, int tam){
 	tabela->tam = tam;
 	for(int i=0; i<tam; i++){
 		tabela->v[i].estado = 0;
+		tabela->v[i].rrn = -1;
 	}
 }
 
@@ -355,12 +355,28 @@ void cadastrar(Hashtable *tabela){
 	// 	return;
 	// }
 	int pos = hash(p.pk, tabela->tam);
-	printf("POS: %d\n", pos);
-	if(tabela->v[pos].estado != 1){
+	if(tabela->v[pos].estado != OCUPADO){
 		strcpy(tabela->v[pos].pk, p.pk);
-		tabela->v[pos].estado = 1;
+		tabela->v[pos].estado = OCUPADO;
+		tabela->v[pos].rrn = nregistros;
+		nregistros++;
 		salvarProduto(p);
+		return;
 	}
+	else{
+		int colisao = 0;
+		for(int i = pos; i < pos + tabela->tam; i++, colisao++){
+			if(tabela->v[i % tabela->tam].estado != OCUPADO){
+				strcpy(tabela->v[i % tabela->tam].pk, p.pk);
+				tabela->v[i % tabela->tam].estado = OCUPADO;
+				tabela->v[i % tabela->tam].rrn = nregistros;
+				nregistros++;
+				salvarProduto(p);
+				return;
+			}
+		}
+	}
+	printf(ERRO_TABELA_CHEIA);
 }
 
 void imprimir_tabela(Hashtable tabela){
@@ -377,4 +393,8 @@ void imprimir_tabela(Hashtable tabela){
 				break;
 		}
 	}
+}
+
+void liberar_tabela(Hashtable* tabela){
+	free(tabela->v);
 }
