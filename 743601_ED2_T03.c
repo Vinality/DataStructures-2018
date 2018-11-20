@@ -105,7 +105,6 @@ int exibir_registro(int rrn);
 /*Função de Hash*/
 short hash(const char* chave, int tam);
 
-
 /*Auxiliar para a função de hash*/
 short f(char x);
 
@@ -129,6 +128,7 @@ void salvarProduto(Produto p);
 int ehPrimo(int n);
 void criar_tabela(Hashtable *tabela, int tam);
 void imprimir_tabela(Hashtable tabela);
+int inserir_hash(Hashtable *tabela, int pos, Produto p, int *colisao);
 
 /* ==========================================================================
  * ============================ FUNÇÃO PRINCIPAL ============================
@@ -148,8 +148,8 @@ int main()
 
 	Hashtable tabela;
 	criar_tabela(&tabela, tam);
-	// if (carregarArquivo)
-		// carregar_tabela(&tabela);
+	if (carregarArquivo)
+		carregar_tabela(&tabela);
 
 	/* Execução do programa */
 	int opcao = 0;
@@ -162,21 +162,21 @@ int main()
 					break;
 				case 2:
 					printf(INICIO_ALTERACAO);
-					// if(alterar(tabela))
-					// 	printf(SUCESSO);
-					// else
-					// 	printf(FALHA);
+					if(alterar(tabela))
+						printf(SUCESSO);
+					else
+						printf(FALHA);
 					break;
 				case 3:
 					printf(INICIO_BUSCA);
-					// buscar(tabela);
+					buscar(tabela);
 					break;
 				case 4:
 					printf(INICIO_EXCLUSAO);
-					// if(remover(&tabela))
-					// 	printf(SUCESSO);
-					// else
-					// 	printf(FALHA);
+					if(remover(&tabela))
+						printf(SUCESSO);
+					else
+						printf(FALHA);
 					break;
 				case 5:
 					printf(INICIO_LISTAGEM);
@@ -202,6 +202,7 @@ int main()
 /* Recebe do usuário uma string simulando o arquivo completo. */
 void carregar_arquivo() {
 	scanf("%[^\n]\n", ARQUIVO);
+	nregistros = strlen(ARQUIVO) / TAM_REGISTRO;
 }
 
 /*Auxiliar para a função de hash*/
@@ -226,7 +227,8 @@ int exibir_registro(int rrn)
 	float preco;
 	int desconto;
 	Produto j = recuperar_registro(rrn);
-  	char *cat, categorias[TAM_CATEGORIA];
+  	char *cat;
+	char *categorias = (char*)calloc(TAM_CATEGORIA, sizeof(char));
 	printf("%s\n", j.pk);
 	printf("%s\n", j.nome);
 	printf("%s\n", j.marca);
@@ -349,34 +351,45 @@ void criar_tabela(Hashtable *tabela, int tam){
 
 void cadastrar(Hashtable *tabela){
 	Produto p;
+	int colisao = 0;
 	inserir_produto(&p);
-	// if(buscarChave(p.pk)){
-	// 	printf(ERRO_PK_REPETIDA, p.pk);
-	// 	return;
-	// }
+	for(int i = 0; i<tabela->tam; i++){
+		if(strcmp(tabela->v[i].pk, p.pk)==0 && tabela->v[i].rrn != -1){
+			printf(ERRO_PK_REPETIDA, p.pk);
+			return;
+		}
+	}
 	int pos = hash(p.pk, tabela->tam);
+	if(inserir_hash(tabela, pos, p, &colisao)){
+		salvarProduto(p);
+		printf(REGISTRO_INSERIDO, p.pk, colisao);
+	}
+
+}
+
+int inserir_hash(Hashtable *tabela, int pos, Produto p, int *colisao){
 	if(tabela->v[pos].estado != OCUPADO){
 		strcpy(tabela->v[pos].pk, p.pk);
 		tabela->v[pos].estado = OCUPADO;
 		tabela->v[pos].rrn = nregistros;
 		nregistros++;
-		salvarProduto(p);
-		return;
+		return 1;
 	}
 	else{
-		int colisao = 0;
-		for(int i = pos; i < pos + tabela->tam; i++, colisao++){
+		*colisao = 0;
+		for(int i = pos; i < pos + tabela->tam; i++){
 			if(tabela->v[i % tabela->tam].estado != OCUPADO){
 				strcpy(tabela->v[i % tabela->tam].pk, p.pk);
 				tabela->v[i % tabela->tam].estado = OCUPADO;
 				tabela->v[i % tabela->tam].rrn = nregistros;
 				nregistros++;
-				salvarProduto(p);
-				return;
+				return 1;
 			}
+			*colisao = *colisao + 1;
 		}
 	}
 	printf(ERRO_TABELA_CHEIA);
+	return 0;
 }
 
 void imprimir_tabela(Hashtable tabela){
@@ -397,4 +410,112 @@ void imprimir_tabela(Hashtable tabela){
 
 void liberar_tabela(Hashtable* tabela){
 	free(tabela->v);
+}
+
+void carregar_tabela(Hashtable *tabela){
+	int colisao = 0;
+	int nreg = nregistros;
+	for(nregistros = 0; nregistros < nreg;){
+		Produto temp = recuperar_registro(nregistros);
+		colisao = 0;
+		inserir_hash(tabela, hash(temp.pk, tabela->tam), temp, &colisao);
+	}
+}
+
+int remover(Hashtable *tabela){
+	char rem[TAM_PRIMARY_KEY];
+	int flag = 0;
+	int pos;
+	scanf("%s", rem);
+
+	for(int i = 0; i<tabela->tam; i++){
+		if(strcmp(tabela->v[i].pk, rem)==0 && tabela->v[i].rrn != -1){
+			pos = (tabela->v[i].rrn)*192;
+			ARQUIVO[pos] = '*';
+			ARQUIVO[pos+1] = '|';
+			tabela->v[i % tabela->tam].estado = REMOVIDO;
+			tabela->v[i % tabela->tam].rrn = -1;
+			flag = 1;
+		}
+	}
+	if(flag)
+		return 1;
+	else
+		printf(REGISTRO_N_ENCONTRADO);
+	return 0;
+}
+
+void buscar(Hashtable tabela){
+	char find[TAM_PRIMARY_KEY];
+	scanf("%s", find);
+	int pos = hash(find, tabela.tam);
+	for(int i = pos; i < pos + tabela.tam; i++){
+		if(tabela.v[i % tabela.tam].estado == LIVRE){
+			printf(REGISTRO_N_ENCONTRADO);
+			return;
+		}
+		if(strcmp(tabela.v[i % tabela.tam].pk, find)==0 && tabela.v[i % tabela.tam].rrn != -1){
+			exibir_registro(tabela.v[i].rrn);
+			return;
+		}
+	}
+	printf(REGISTRO_N_ENCONTRADO);
+}
+
+int alterar(Hashtable tabela){
+	char find[TAM_PRIMARY_KEY];
+	char alt[TAM_DESCONTO];
+	int valido = 0;
+	int i, flag = 0;
+	scanf("%s", find);
+	for(i = 0; i<tabela.tam; i++){
+		if(strcmp(tabela.v[i].pk, find)==0){
+			flag = 1;
+			break;
+		}
+	}
+
+	if(flag == 0){
+		printf(REGISTRO_N_ENCONTRADO);
+		return 0;
+	}
+
+	while(!valido){
+		scanf("%s", alt);
+		if(strcmp(alt, "000") < 0 || strcmp(alt, "100") > 0)
+			printf(CAMPO_INVALIDO);
+		else
+			valido = 1;
+	}
+
+	Produto prod;
+	prod = recuperar_registro(tabela.v[i].rrn);
+	float precofinal = atof(prod.preco);
+	int desc = atoi(alt);
+	precofinal = (precofinal *  (100-desc))/100.0;
+	precofinal = precofinal*100;
+	precofinal = ((int) precofinal)/ (float) 100;
+
+	char temp[193], *p;
+	strncpy(temp, ARQUIVO + (tabela.v[i].rrn*192), 192);
+	int tam = (tabela.v[i].rrn)*192;
+	temp[192] = '\0';
+	p = strtok(temp,"@");
+	tam+=strlen(p);
+	p = strtok(NULL,"@");
+	tam+=strlen(p);
+	p = strtok(NULL,"@");
+	tam+=strlen(p);
+	p = strtok(NULL,"@");
+	tam+=strlen(p);
+	p = strtok(NULL,"@");
+	tam+=strlen(p);
+	p = strtok(NULL,"@");
+	tam+=strlen(p);
+	tam+=6;
+	ARQUIVO[tam] = alt[0];
+	ARQUIVO[tam+1] = alt[1];
+	ARQUIVO[tam+2] = alt[2];
+
+	return 1;
 }
