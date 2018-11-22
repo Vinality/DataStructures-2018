@@ -369,7 +369,6 @@ void cadastrar(Hashtable *tabela){
         salvarProduto(p);
         printf(REGISTRO_INSERIDO, p.pk, colisao);
     }
-
 }
 
 int inserir_hash(Hashtable *tabela, int pos, Produto p, int *colisao){
