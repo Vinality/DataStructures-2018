@@ -87,7 +87,6 @@ int nregistros;
 /* Recebe do usuário uma string simulando o arquivo completo. */
 void carregar_arquivo();
 
-
 /* Exibe o jogo */
 int exibir_registro(int rrn);
 
@@ -110,16 +109,16 @@ int remover(Hashtable* tabela);
 void liberar_tabela(Hashtable* tabela);
 
 /* <<< DECLARE AQUI OS PROTOTIPOS >>> */
-void gerarChave(Produto *prod);
-Produto recuperar_registro(int rrn);
-void inserir_produto(Produto *novo);
-void salvarProduto(Produto p);
-int ehPrimo(int n);
-void imprimir_tabela(Hashtable tabela);
-void criar_tabela(Hashtable *tabela, int tam);
-void liberar_tabela(Hashtable* tabela);
-void inserir_hash(Hashtable *tabela, int pos, Produto p);
-int validaDesc(char *alt);
+void gerarChave(Produto *prod); // Gera a chave primaria
+Produto recuperar_registro(int rrn); // Recupera o produto a partir do rrn
+void inserir_produto(Produto *novo); // Le do teclado os dados do produto novo
+void salvarProduto(Produto p); // Insere no arquivo de dados o produto novo
+int ehPrimo(int n); // Verifica se o numero e primo
+int prox_primo(int tam); // Determina o proximo primo caso ja nao seja
+void imprimir_tabela(Hashtable tabela); // Imprime a hash table
+void criar_tabela(Hashtable *tabela, int tam); // Inicializa a hash table
+void inserir_hash(Hashtable *tabela, int pos, Produto p); // Insere o produto na hash table a partir do arquivo
+int validaDesc(char *alt); // Verifica se e valido o campo desconto inserido
 
 /* ==========================================================================
  * ============================ FUNÇÃO PRINCIPAL ============================
@@ -212,7 +211,7 @@ short hash(const char* chave, int tam){
     return soma%tam;
 }
 
-/* Exibe o jogo */
+/* Exibe o produto */
 int exibir_registro(int rrn)
 {
 	if(rrn<0)
@@ -239,6 +238,7 @@ int exibir_registro(int rrn)
 	return 1;
 }
 
+// Recupera o registro a partir do rrn no arquivo de dados
 Produto recuperar_registro(int rrn){
     char *temp, *p;
     temp = (char*)calloc(TAM_REGISTRO + 1, sizeof(char));
@@ -306,6 +306,7 @@ void salvarProduto(Produto p){
     strcat(ARQUIVO, temp);
 }
 
+// Verifica se o inteiro e primo
 int ehPrimo(int n){
     if (n == 2 || n == 3)
         return 1;
@@ -326,6 +327,7 @@ int ehPrimo(int n){
     return 1;
 }
 
+// Encontra o proximo primo caso nao seja
 int prox_primo(int tam){
     if(ehPrimo(tam))
         return tam;
@@ -333,6 +335,7 @@ int prox_primo(int tam){
        return tam;
 }
 
+// Inicializa a hash table e seus campos
 void criar_tabela(Hashtable *tabela, int tam){
     tabela->v = (Chave**) malloc(tam * sizeof(Chave*));
     tabela->tam = tam;
@@ -341,6 +344,7 @@ void criar_tabela(Hashtable *tabela, int tam){
     }
 }
 
+// Insere um produto manualmente na hash table
 void cadastrar(Hashtable *tabela){
     Produto p;
     inserir_produto(&p);
@@ -354,6 +358,7 @@ void cadastrar(Hashtable *tabela){
 
 	Chave *chaveaux = tabela->v[pos];
 
+	// Insere no encadeamento caso ja existam registros la
 	if(tabela->v[pos] != NULL){
 		chaveaux = tabela->v[pos];
 		while(chaveaux != NULL){
@@ -365,12 +370,14 @@ void cadastrar(Hashtable *tabela){
 		}
 	}
 
-   if(tabela->v[pos] == NULL || strcmp(tabela->v[pos]->pk, novo->pk) >= 0){
-	   novo->prox = tabela->v[pos];
-	   tabela->v[pos] = novo;
-   }
+	// Insere no comeco
+   	if(tabela->v[pos] == NULL || strcmp(tabela->v[pos]->pk, novo->pk) >= 0){
+	   	novo->prox = tabela->v[pos];
+	   	tabela->v[pos] = novo;
+   	}
 
-   else{
+   	else{
+		// Encontra a posicao correta e insere ordenado
 		chaveaux = tabela->v[pos];
 		while(chaveaux->prox != NULL && strcmp(chaveaux->prox->pk, novo->pk) < 0){
 			chaveaux = chaveaux->prox;
@@ -384,6 +391,7 @@ void cadastrar(Hashtable *tabela){
     printf(REGISTRO_INSERIDO, p.pk);
 }
 
+// Imprime a hash table segundo os padroes
 void imprimir_tabela(Hashtable tabela){
 	for(int i = 0 ; i < tabela.tam ; i++){
 		Chave *aux = tabela.v[i];
@@ -396,10 +404,12 @@ void imprimir_tabela(Hashtable tabela){
 	}
 }
 
+// Libera a memoria da tabela
 void liberar_tabela(Hashtable* tabela){
 	free(tabela->v);
 }
 
+// Recupera cada registro do arquivo e insere na tabela encadeada
 void carregar_tabela(Hashtable *tabela){
     int nreg = nregistros;
     for(nregistros = 0; nregistros < nreg;){
@@ -408,6 +418,7 @@ void carregar_tabela(Hashtable *tabela){
     }
 }
 
+// Insere o produto recuperado na tabela encadeada
 void inserir_hash(Hashtable *tabela, int pos, Produto p){
 	Chave *novo = (Chave *)malloc(sizeof(Chave));
 	strcpy(novo->pk, p.pk);
@@ -416,6 +427,7 @@ void inserir_hash(Hashtable *tabela, int pos, Produto p){
 
 	Chave *chaveaux = tabela->v[pos];
 
+	// Insere na posicao certa caso ja exista lista naquela posicao
 	if(tabela->v[pos] != NULL){
 		chaveaux = tabela->v[pos];
 		while(chaveaux != NULL){
@@ -427,12 +439,14 @@ void inserir_hash(Hashtable *tabela, int pos, Produto p){
 		}
 	}
 
-   if(tabela->v[pos] == NULL || strcmp(tabela->v[pos]->pk, novo->pk) >= 0){
-	   novo->prox = tabela->v[pos];
-	   tabela->v[pos] = novo;
-   }
+	// Insere no comeco
+   	if(tabela->v[pos] == NULL || strcmp(tabela->v[pos]->pk, novo->pk) >= 0){
+	   	novo->prox = tabela->v[pos];
+	   	tabela->v[pos] = novo;
+   	}
 
-   else{
+   	else{
+		// Procura a posicao correta e insere
 		chaveaux = tabela->v[pos];
 		while(chaveaux->prox != NULL && strcmp(chaveaux->prox->pk, novo->pk) < 0){
 			chaveaux = chaveaux->prox;
@@ -443,6 +457,7 @@ void inserir_hash(Hashtable *tabela, int pos, Produto p){
 	nregistros++;
 }
 
+// Procura a chave primaria e exibe o registro
 void buscar(Hashtable tabela){
     char find[TAM_PRIMARY_KEY];
     scanf("\n%[^\n]s", find);
@@ -468,6 +483,7 @@ void buscar(Hashtable tabela){
     printf(REGISTRO_N_ENCONTRADO);
 }
 
+// Remove um registro da tabela
 int remover(Hashtable *tabela){
 	char rem[TAM_PRIMARY_KEY];
 	scanf("\n%[^\n]s", rem);
@@ -500,6 +516,7 @@ int remover(Hashtable *tabela){
 	return 1;
 }
 
+// Encontra o registro e remove da tabela e da lista ligada
 int alterar(Hashtable tabela){
     char alt[TAM_PRIMARY_KEY];
     scanf("\n%[^\n]s", alt);
@@ -566,6 +583,7 @@ int alterar(Hashtable tabela){
 	}
 }
 
+// Verifica se e valido o campo desconto inserido
 int validaDesc(char *alt){
     if(strlen(alt) != TAM_DESCONTO-1){
         return 0;
