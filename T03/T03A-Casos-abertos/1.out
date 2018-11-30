@@ -1,0 +1,112 @@
+Registro GEMS230917 inserido com sucesso. Numero de colisoes: 0.
+
+Registro MOLO301217 inserido com sucesso. Numero de colisoes: 0.
+
+Registro TEWA090116 inserido com sucesso. Numero de colisoes: 0.
+
+Registro PRIN080918 inserido com sucesso. Numero de colisoes: 0.
+
+Registro FOCO170912 inserido com sucesso. Numero de colisoes: 0.
+
+********************************LISTAR********************************
+[0] Livre
+[1] Ocupado: FOCO170912
+[2] Livre
+[3] Livre
+[4] Livre
+[5] Livre
+[6] Livre
+[7] Livre
+[8] Livre
+[9] Ocupado: GEMS230917
+[10] Livre
+[11] Ocupado: MOLO301217
+[12] Livre
+[13] Ocupado: PRIN080918
+[14] Livre
+[15] Livre
+[16] Livre
+[17] Livre
+[18] Ocupado: TEWA090116
+Registro MECR251216 inserido com sucesso. Numero de colisoes: 1.
+
+Registro MEKI090716 inserido com sucesso. Numero de colisoes: 0.
+
+Registro FOEV280214 inserido com sucesso. Numero de colisoes: 1.
+
+Registro PLAS081117 inserido com sucesso. Numero de colisoes: 0.
+
+********************************LISTAR********************************
+[0] Livre
+[1] Ocupado: FOCO170912
+[2] Ocupado: MECR251216
+[3] Livre
+[4] Livre
+[5] Livre
+[6] Livre
+[7] Livre
+[8] Livre
+[9] Ocupado: GEMS230917
+[10] Ocupado: FOEV280214
+[11] Ocupado: MOLO301217
+[12] Livre
+[13] Ocupado: PRIN080918
+[14] Livre
+[15] Livre
+[16] Ocupado: PLAS081117
+[17] Ocupado: MEKI090716
+[18] Ocupado: TEWA090116
+Registro GEMS251215 inserido com sucesso. Numero de colisoes: 2.
+
+Registro MOMU301217 inserido com sucesso. Numero de colisoes: 0.
+
+Registro TEWA150416 inserido com sucesso. Numero de colisoes: 0.
+
+Registro ININ180918 inserido com sucesso. Numero de colisoes: 0.
+
+Registro RACR291116 inserido com sucesso. Numero de colisoes: 0.
+
+********************************BUSCAR********************************
+ININ180918
+INTEL CORE I7-8400 8GE
+INTEL
+18/09/2018
+18
+1987.90
+PROCESSADOR HARDWARE GAMER 
+Registro PLGI280917 inserido com sucesso. Numero de colisoes: 1.
+
+Registro MOAM081014 inserido com sucesso. Numero de colisoes: 0.
+
+Registro FOEV200216 inserido com sucesso. Numero de colisoes: 8.
+
+Registro GEAS271016 inserido com sucesso. Numero de colisoes: 0.
+
+********************************BUSCAR********************************
+RACR291116
+RAM 16GB 2400MHZ DDR4
+CRUCIAL
+29/11/2017
+16
+0576.95
+MEMORIA RAM HARDWARE 
+********************************LISTAR********************************
+[0] Ocupado: MOMU301217
+[1] Ocupado: FOCO170912
+[2] Ocupado: MECR251216
+[3] Ocupado: ININ180918
+[4] Ocupado: TEWA150416
+[5] Ocupado: PLGI280917
+[6] Ocupado: MOAM081014
+[7] Ocupado: FOEV200216
+[8] Ocupado: GEAS271016
+[9] Ocupado: GEMS230917
+[10] Ocupado: FOEV280214
+[11] Ocupado: MOLO301217
+[12] Ocupado: GEMS251215
+[13] Ocupado: PRIN080918
+[14] Ocupado: RACR291116
+[15] Livre
+[16] Ocupado: PLAS081117
+[17] Ocupado: MEKI090716
+[18] Ocupado: TEWA090116

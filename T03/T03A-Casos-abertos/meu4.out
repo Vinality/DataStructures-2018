@@ -1,0 +1,110 @@
+Registro GEGI200118 inserido com sucesso. Numero de colisoes: 0.
+
+Registro RAGI180417 inserido com sucesso. Numero de colisoes: 0.
+
+Registro I7MS161015 inserido com sucesso. Numero de colisoes: 0.
+
+Registro I3CR160717 inserido com sucesso. Numero de colisoes: 0.
+
+********************************BUSCAR********************************
+I7MS161015
+I7 - 8700
+MSI
+16/10/06
+15
+0163.01
+FONTE HARDWARE HD PLACA DE VIDEO 
+Registro GEGI200918 inserido com sucesso. Numero de colisoes: 0.
+
+Registro TEAS150215 inserido com sucesso. Numero de colisoes: 0.
+
+********************************BUSCAR********************************
+Registro(s) nao encontrado!
+Registro RAAS140816 inserido com sucesso. Numero de colisoes: 0.
+
+Registro PLGI120318 inserido com sucesso. Numero de colisoes: 2.
+
+********************************LISTAR********************************
+[0] Livre
+[1] Livre
+[2] Livre
+[3] Ocupado: GEGI200918
+[4] Livre
+[5] Livre
+[6] Livre
+[7] Ocupado: TEAS150215
+[8] Ocupado: GEGI200118
+[9] Ocupado: RAGI180417
+[10] Ocupado: PLGI120318
+[11] Livre
+[12] Livre
+[13] Ocupado: I7MS161015
+[14] Livre
+[15] Livre
+[16] Ocupado: RAAS140816
+[17] Livre
+[18] Livre
+[19] Livre
+[20] Ocupado: I3CR160717
+[21] Livre
+[22] Livre
+Registro RAIN100116 inserido com sucesso. Numero de colisoes: 2.
+
+Registro I5GI030714 inserido com sucesso. Numero de colisoes: 0.
+
+Registro GEKI241215 inserido com sucesso. Numero de colisoes: 1.
+
+Registro TEWA190116 inserido com sucesso. Numero de colisoes: 0.
+
+Registro MOCO060517 inserido com sucesso. Numero de colisoes: 0.
+
+Registro FOCR030817 inserido com sucesso. Numero de colisoes: 1.
+
+Registro MOMS211017 inserido com sucesso. Numero de colisoes: 0.
+
+Registro HDCO001018 inserido com sucesso. Numero de colisoes: 7.
+
+Registro GEAM050216 inserido com sucesso. Numero de colisoes: 7.
+
+Registro GEEV231218 inserido com sucesso. Numero de colisoes: 1.
+
+Registro TEMS100217 inserido com sucesso. Numero de colisoes: 8.
+
+Registro FOCO020815 inserido com sucesso. Numero de colisoes: 1.
+
+Registro HDWA000415 inserido com sucesso. Numero de colisoes: 8.
+
+Registro I7CO170714 inserido com sucesso. Numero de colisoes: 3.
+
+Registro I3AS060315 inserido com sucesso. Numero de colisoes: 0.
+
+ERRO: Tabela Hash esta cheia!
+
+ERRO: Tabela Hash esta cheia!
+
+**********************EXCLUIR*********************
+OPERACAO REALIZADA COM SUCESSO!
+********************************LISTAR********************************
+[0] Ocupado: I5GI030714
+[1] Ocupado: FOCR030817
+[2] Ocupado: I7CO170714
+[3] Ocupado: GEGI200918
+[4] Ocupado: I3AS060315
+[5] Ocupado: MOMS211017
+[6] Ocupado: FOCO020815
+[7] Ocupado: TEAS150215
+[8] Ocupado: GEGI200118
+[9] Ocupado: RAGI180417
+[10] Ocupado: PLGI120318
+[11] Ocupado: RAIN100116
+[12] Ocupado: MOCO060517
+[13] Removido
+[14] Ocupado: GEKI241215
+[15] Ocupado: HDCO001018
+[16] Ocupado: RAAS140816
+[17] Ocupado: TEWA190116
+[18] Ocupado: GEAM050216
+[19] Ocupado: GEEV231218
+[20] Ocupado: I3CR160717
+[21] Ocupado: TEMS100217
+[22] Ocupado: HDWA000415

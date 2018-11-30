@@ -1,0 +1,413 @@
+Registro GEGI200118 inserido com sucesso. Numero de colisoes: 0.
+
+Registro RAGI180417 inserido com sucesso. Numero de colisoes: 0.
+
+Registro I7MS161015 inserido com sucesso. Numero de colisoes: 0.
+
+Registro I3CR160717 inserido com sucesso. Numero de colisoes: 0.
+
+********************************BUSCAR********************************
+I7MS161015
+I7 - 8700
+MSI
+16/10/06
+15
+0163.01
+FONTE HARDWARE HD PLACA DE VIDEO 
+Registro GEGI200918 inserido com sucesso. Numero de colisoes: 0.
+
+Registro TEAS150215 inserido com sucesso. Numero de colisoes: 0.
+
+********************************BUSCAR********************************
+Registro(s) nao encontrado!
+Registro RAAS140816 inserido com sucesso. Numero de colisoes: 0.
+
+Registro PLGI120318 inserido com sucesso. Numero de colisoes: 0.
+
+********************************LISTAR********************************
+[0] Livre
+[1] Ocupado: I7MS161015
+[2] Livre
+[3] Livre
+[4] Livre
+[5] Livre
+[6] Livre
+[7] Livre
+[8] Ocupado: I3CR160717
+[9] Livre
+[10] Livre
+[11] Livre
+[12] Livre
+[13] Livre
+[14] Livre
+[15] Livre
+[16] Livre
+[17] Livre
+[18] Livre
+[19] Livre
+[20] Livre
+[21] Livre
+[22] Livre
+[23] Livre
+[24] Livre
+[25] Livre
+[26] Ocupado: PLGI120318
+[27] Ocupado: RAAS140816
+[28] Livre
+[29] Livre
+[30] Livre
+[31] Livre
+[32] Livre
+[33] Ocupado: GEGI200118
+[34] Livre
+[35] Livre
+[36] Livre
+[37] Livre
+[38] Livre
+[39] Livre
+[40] Livre
+[41] Livre
+[42] Livre
+[43] Livre
+[44] Ocupado: GEGI200918
+[45] Livre
+[46] Livre
+[47] Livre
+[48] Ocupado: TEAS150215
+[49] Livre
+[50] Ocupado: RAGI180417
+[51] Livre
+[52] Livre
+Registro RAIN100116 inserido com sucesso. Numero de colisoes: 0.
+
+Registro I5GI030714 inserido com sucesso. Numero de colisoes: 0.
+
+Registro GEKI241215 inserido com sucesso. Numero de colisoes: 0.
+
+Registro TEWA190116 inserido com sucesso. Numero de colisoes: 0.
+
+Registro MOCO060517 inserido com sucesso. Numero de colisoes: 0.
+
+Registro FOCR030817 inserido com sucesso. Numero de colisoes: 0.
+
+Registro MOMS211017 inserido com sucesso. Numero de colisoes: 0.
+
+Registro HDCO001018 inserido com sucesso. Numero de colisoes: 2.
+
+Registro GEAM050216 inserido com sucesso. Numero de colisoes: 0.
+
+Registro GEEV231218 inserido com sucesso. Numero de colisoes: 1.
+
+Registro TEMS100217 inserido com sucesso. Numero de colisoes: 1.
+
+Registro FOCO020815 inserido com sucesso. Numero de colisoes: 1.
+
+Registro HDWA000415 inserido com sucesso. Numero de colisoes: 0.
+
+Registro I7CO170714 inserido com sucesso. Numero de colisoes: 0.
+
+Registro I3AS060315 inserido com sucesso. Numero de colisoes: 0.
+
+Registro GEIN240416 inserido com sucesso. Numero de colisoes: 2.
+
+Registro HDAS180316 inserido com sucesso. Numero de colisoes: 4.
+
+Registro GEAM071017 inserido com sucesso. Numero de colisoes: 3.
+
+********************************ALTERAR*******************************
+Campo invalido! Informe novamente.
+OPERACAO REALIZADA COM SUCESSO!
+Registro GECO180216 inserido com sucesso. Numero de colisoes: 0.
+
+Registro I5KI131114 inserido com sucesso. Numero de colisoes: 0.
+
+********************************BUSCAR********************************
+I3AS060315
+I3 - 7100
+ASROCK
+06/03/01
+15
+0019.96
+FONTE HARDWARE HD MEMORIA RAM MOUSE PERIFERICO 
+Registro RAGI230217 inserido com sucesso. Numero de colisoes: 4.
+
+Registro GAIN120518 inserido com sucesso. Numero de colisoes: 0.
+
+Registro HDGI130715 inserido com sucesso. Numero de colisoes: 0.
+
+********************************ALTERAR*******************************
+OPERACAO REALIZADA COM SUCESSO!
+********************************BUSCAR********************************
+GAIN120518
+GABINETE LATERAL ACRILICO
+INTEL
+12/05/12
+18
+0071.14
+HARDWARE PLACA MAE 
+**********************EXCLUIR*********************
+OPERACAO REALIZADA COM SUCESSO!
+********************************LISTAR********************************
+[0] Livre
+[1] Ocupado: I7MS161015
+[2] Ocupado: TEMS100217
+[3] Ocupado: GEIN240416
+[4] Ocupado: RAIN100116
+[5] Ocupado: TEWA190116
+[6] Ocupado: GEAM050216
+[7] Ocupado: GEEV231218
+[8] Ocupado: I3CR160717
+[9] Ocupado: HDWA000415
+[10] Ocupado: I7CO170714
+[11] Ocupado: HDAS180316
+[12] Ocupado: GEAM071017
+[13] Ocupado: RAGI230217
+[14] Livre
+[15] Livre
+[16] Ocupado: MOMS211017
+[17] Ocupado: FOCO020815
+[18] Ocupado: I5GI030714
+[19] Livre
+[20] Livre
+[21] Livre
+[22] Ocupado: I3AS060315
+[23] Ocupado: MOCO060517
+[24] Livre
+[25] Livre
+[26] Ocupado: PLGI120318
+[27] Ocupado: RAAS140816
+[28] Livre
+[29] Livre
+[30] Livre
+[31] Ocupado: GEKI241215
+[32] Livre
+[33] Ocupado: GEGI200118
+[34] Ocupado: FOCR030817
+[35] Ocupado: HDCO001018
+[36] Livre
+[37] Removido
+[38] Livre
+[39] Livre
+[40] Ocupado: HDGI130715
+[41] Livre
+[42] Livre
+[43] Ocupado: GECO180216
+[44] Ocupado: GEGI200918
+[45] Livre
+[46] Livre
+[47] Ocupado: I5KI131114
+[48] Ocupado: TEAS150215
+[49] Livre
+[50] Ocupado: RAGI180417
+[51] Livre
+[52] Livre
+Registro TEAS160217 inserido com sucesso. Numero de colisoes: 13.
+
+Registro FOAM090515 inserido com sucesso. Numero de colisoes: 0.
+
+********************************BUSCAR********************************
+Registro(s) nao encontrado!
+Registro GEKI160418 inserido com sucesso. Numero de colisoes: 2.
+
+**********************EXCLUIR*********************
+Registro(s) nao encontrado!
+FALHA AO REALIZAR OPERACAO!
+Registro GAIN120518 inserido com sucesso. Numero de colisoes: 0.
+
+********************************LISTAR********************************
+[0] Livre
+[1] Ocupado: I7MS161015
+[2] Ocupado: TEMS100217
+[3] Ocupado: GEIN240416
+[4] Ocupado: RAIN100116
+[5] Ocupado: TEWA190116
+[6] Ocupado: GEAM050216
+[7] Ocupado: GEEV231218
+[8] Ocupado: I3CR160717
+[9] Ocupado: HDWA000415
+[10] Ocupado: I7CO170714
+[11] Ocupado: HDAS180316
+[12] Ocupado: GEAM071017
+[13] Ocupado: RAGI230217
+[14] Ocupado: TEAS160217
+[15] Livre
+[16] Ocupado: MOMS211017
+[17] Ocupado: FOCO020815
+[18] Ocupado: I5GI030714
+[19] Livre
+[20] Ocupado: FOAM090515
+[21] Livre
+[22] Ocupado: I3AS060315
+[23] Ocupado: MOCO060517
+[24] Livre
+[25] Livre
+[26] Ocupado: PLGI120318
+[27] Ocupado: RAAS140816
+[28] Livre
+[29] Livre
+[30] Livre
+[31] Ocupado: GEKI241215
+[32] Livre
+[33] Ocupado: GEGI200118
+[34] Ocupado: FOCR030817
+[35] Ocupado: HDCO001018
+[36] Livre
+[37] Ocupado: GAIN120518
+[38] Livre
+[39] Livre
+[40] Ocupado: HDGI130715
+[41] Livre
+[42] Livre
+[43] Ocupado: GECO180216
+[44] Ocupado: GEGI200918
+[45] Livre
+[46] Livre
+[47] Ocupado: I5KI131114
+[48] Ocupado: TEAS150215
+[49] Ocupado: GEKI160418
+[50] Ocupado: RAGI180417
+[51] Livre
+[52] Livre
+ERRO: Ja existe um registro com a chave primaria: HDGI130715.
+
+ERRO: Ja existe um registro com a chave primaria: TEAS160217.
+
+ERRO: Ja existe um registro com a chave primaria: FOAM090515.
+
+ERRO: Ja existe um registro com a chave primaria: GEKI160418.
+
+Registro GEAM050118 inserido com sucesso. Numero de colisoes: 0.
+
+Registro GEIN190518 inserido com sucesso. Numero de colisoes: 2.
+
+********************************ALTERAR*******************************
+Registro(s) nao encontrado!
+FALHA AO REALIZAR OPERACAO!
+********************************ALTERAR*******************************
+Campo invalido! Informe novamente.
+Campo invalido! Informe novamente.
+OPERACAO REALIZADA COM SUCESSO!
+********************************BUSCAR********************************
+GEIN190518
+GEOFORCE GTX 1050 TI 4GB
+INTEL
+19/05/06
+18
+0184.40
+HARDWARE 
+********************************LISTAR********************************
+[0] Livre
+[1] Ocupado: I7MS161015
+[2] Ocupado: TEMS100217
+[3] Ocupado: GEIN240416
+[4] Ocupado: RAIN100116
+[5] Ocupado: TEWA190116
+[6] Ocupado: GEAM050216
+[7] Ocupado: GEEV231218
+[8] Ocupado: I3CR160717
+[9] Ocupado: HDWA000415
+[10] Ocupado: I7CO170714
+[11] Ocupado: HDAS180316
+[12] Ocupado: GEAM071017
+[13] Ocupado: RAGI230217
+[14] Ocupado: TEAS160217
+[15] Livre
+[16] Ocupado: MOMS211017
+[17] Ocupado: FOCO020815
+[18] Ocupado: I5GI030714
+[19] Livre
+[20] Ocupado: FOAM090515
+[21] Livre
+[22] Ocupado: I3AS060315
+[23] Ocupado: MOCO060517
+[24] Livre
+[25] Livre
+[26] Ocupado: PLGI120318
+[27] Ocupado: RAAS140816
+[28] Livre
+[29] Livre
+[30] Livre
+[31] Ocupado: GEKI241215
+[32] Livre
+[33] Ocupado: GEGI200118
+[34] Ocupado: FOCR030817
+[35] Ocupado: HDCO001018
+[36] Ocupado: GEIN190518
+[37] Ocupado: GAIN120518
+[38] Livre
+[39] Livre
+[40] Ocupado: HDGI130715
+[41] Livre
+[42] Livre
+[43] Ocupado: GECO180216
+[44] Ocupado: GEGI200918
+[45] Livre
+[46] Livre
+[47] Ocupado: I5KI131114
+[48] Ocupado: TEAS150215
+[49] Ocupado: GEKI160418
+[50] Ocupado: RAGI180417
+[51] Ocupado: GEAM050118
+[52] Livre
+Registro MOAS070517 inserido com sucesso. Numero de colisoes: 0.
+
+Registro GEEV140218 inserido com sucesso. Numero de colisoes: 0.
+
+Registro GECR140217 inserido com sucesso. Numero de colisoes: 1.
+
+Registro GEIN020218 inserido com sucesso. Numero de colisoes: 3.
+
+********************************LISTAR********************************
+[0] Ocupado: GEEV140218
+[1] Ocupado: I7MS161015
+[2] Ocupado: TEMS100217
+[3] Ocupado: GEIN240416
+[4] Ocupado: RAIN100116
+[5] Ocupado: TEWA190116
+[6] Ocupado: GEAM050216
+[7] Ocupado: GEEV231218
+[8] Ocupado: I3CR160717
+[9] Ocupado: HDWA000415
+[10] Ocupado: I7CO170714
+[11] Ocupado: HDAS180316
+[12] Ocupado: GEAM071017
+[13] Ocupado: RAGI230217
+[14] Ocupado: TEAS160217
+[15] Livre
+[16] Ocupado: MOMS211017
+[17] Ocupado: FOCO020815
+[18] Ocupado: I5GI030714
+[19] Ocupado: GEIN020218
+[20] Ocupado: FOAM090515
+[21] Livre
+[22] Ocupado: I3AS060315
+[23] Ocupado: MOCO060517
+[24] Livre
+[25] Livre
+[26] Ocupado: PLGI120318
+[27] Ocupado: RAAS140816
+[28] Livre
+[29] Livre
+[30] Livre
+[31] Ocupado: GEKI241215
+[32] Ocupado: GECR140217
+[33] Ocupado: GEGI200118
+[34] Ocupado: FOCR030817
+[35] Ocupado: HDCO001018
+[36] Ocupado: GEIN190518
+[37] Ocupado: GAIN120518
+[38] Livre
+[39] Ocupado: MOAS070517
+[40] Ocupado: HDGI130715
+[41] Livre
+[42] Livre
+[43] Ocupado: GECO180216
+[44] Ocupado: GEGI200918
+[45] Livre
+[46] Livre
+[47] Ocupado: I5KI131114
+[48] Ocupado: TEAS150215
+[49] Ocupado: GEKI160418
+[50] Ocupado: RAGI180417
+[51] Ocupado: GEAM050118
+[52] Livre
