@@ -1,0 +1,403 @@
+ERRO: Ja existe um registro com a chave primaria: FOCO170912.
+**********************ARQUIVO*********************
+FONTE 600W 80 PLUS@CORSAIR@17/09/2016@12@376.35@020@FONTE|HARDWARE@#############################################################################################################################HEADSET GAMER WARRIOR PRETO E AZUL@MULTILASER@18/12/2017@17@171.65@020@HEADSET|PERIFERICO@######################################################################################################GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX@SHARKOON@19/03/2018@17@329.29@010@GABINETE@######################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@CRUCIAL@25/12/2017@16@341.06@010@MEMORIA|RAM|HARDWARE@#############################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@KINGSTON HYPERX@09/07/2018@16@611.65@005@MEMORIA|RAM|HARDWARE@#####################################################################################################
+*****************ARQUIVO SECUNDARIO****************
+FOCO170912 FONTE 600W 80 PLUS
+GASH190317 GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX
+HEMU181217 HEADSET GAMER WARRIOR PRETO E AZUL
+MECR251216 MEMORIA RAM 8GB 2400MHZ DDR4
+MEKI090716 MEMORIA RAM 8GB 2400MHZ DDR4
+*****************ARQUIVO SECUNDARIO****************
+FOCO170912 CORSAIR
+MECR251216 CRUCIAL
+MEKI090716 KINGSTON HYPERX
+HEMU181217 MULTILASER
+GASH190317 SHARKOON
+*****************ARQUIVO SECUNDARIO****************
+FONTE FOCO170912
+GABINETE GASH190317
+HARDWARE FOCO170912 MECR251216 MEKI090716
+HEADSET HEMU181217
+MEMORIA MECR251216 MEKI090716
+PERIFERICO HEMU181217
+RAM MECR251216 MEKI090716
+*****************ARQUIVO SECUNDARIO****************
+HEMU181217 137.32
+GASH190317 296.36
+FOCO170912 301.07
+MECR251216 306.95
+MEKI090716 581.06
+**********************LISTAR**********************
+FOCO170912
+FONTE 600W 80 PLUS
+CORSAIR
+17/09/2016
+376.35
+020
+FONTE, HARDWARE
+
+GASH190317
+GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX
+SHARKOON
+19/03/2018
+329.29
+010
+GABINETE
+
+HEMU181217
+HEADSET GAMER WARRIOR PRETO E AZUL
+MULTILASER
+18/12/2017
+171.65
+020
+HEADSET, PERIFERICO
+
+MECR251216
+MEMORIA RAM 8GB 2400MHZ DDR4
+CRUCIAL
+25/12/2017
+341.06
+010
+MEMORIA, RAM, HARDWARE
+
+MEKI090716
+MEMORIA RAM 8GB 2400MHZ DDR4
+KINGSTON HYPERX
+09/07/2018
+611.65
+005
+MEMORIA, RAM, HARDWARE
+**********************LISTAR**********************
+GASH190317
+GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX
+SHARKOON
+19/03/2018
+329.29
+010
+GABINETE
+**********************LISTAR**********************
+FOCO170912
+FONTE 600W 80 PLUS
+CORSAIR
+17/09/2016
+376.35
+020
+FONTE, HARDWARE
+
+MECR251216
+MEMORIA RAM 8GB 2400MHZ DDR4
+CRUCIAL
+25/12/2017
+341.06
+010
+MEMORIA, RAM, HARDWARE
+
+MEKI090716
+MEMORIA RAM 8GB 2400MHZ DDR4
+KINGSTON HYPERX
+09/07/2018
+611.65
+005
+MEMORIA, RAM, HARDWARE
+
+HEMU181217
+HEADSET GAMER WARRIOR PRETO E AZUL
+MULTILASER
+18/12/2017
+171.65
+020
+HEADSET, PERIFERICO
+
+GASH190317
+GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX
+SHARKOON
+19/03/2018
+329.29
+010
+GABINETE
+**********************LISTAR**********************
+HEMU181217
+HEADSET GAMER WARRIOR PRETO E AZUL
+MULTILASER
+18/12/2017
+0137.32
+HEADSET, PERIFERICO
+
+GASH190317
+GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX
+SHARKOON
+19/03/2018
+0296.36
+GABINETE
+
+FOCO170912
+FONTE 600W 80 PLUS
+CORSAIR
+17/09/2016
+0301.08
+FONTE, HARDWARE
+
+MECR251216
+MEMORIA RAM 8GB 2400MHZ DDR4
+CRUCIAL
+25/12/2017
+0306.95
+MEMORIA, RAM, HARDWARE
+
+MEKI090716
+MEMORIA RAM 8GB 2400MHZ DDR4
+KINGSTON HYPERX
+09/07/2018
+0581.06
+MEMORIA, RAM, HARDWARE
+**********************ALTERAR*********************
+Registro(s) nao encontrado!
+FALHA AO REALIZAR OPERACAO!
+**********************EXCLUIR*********************
+Registro(s) nao encontrado!
+FALHA AO REALIZAR OPERACAO!
+**********************ARQUIVO*********************
+FONTE 600W 80 PLUS@CORSAIR@17/09/2016@12@376.35@020@FONTE|HARDWARE@#############################################################################################################################HEADSET GAMER WARRIOR PRETO E AZUL@MULTILASER@18/12/2017@17@171.65@020@HEADSET|PERIFERICO@######################################################################################################GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX@SHARKOON@19/03/2018@17@329.29@010@GABINETE@######################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@CRUCIAL@25/12/2017@16@341.06@010@MEMORIA|RAM|HARDWARE@#############################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@KINGSTON HYPERX@09/07/2018@16@611.65@005@MEMORIA|RAM|HARDWARE@#####################################################################################################HD SEAGATE 2TB 7200RPM 64MB@SEAGATE@22/05/2018@17@375.55@005@ARMAZENAMENTO|HARDWARE@############################################################################################################
+*****************ARQUIVO SECUNDARIO****************
+HEMU181217 137.32
+GASH190317 296.36
+FOCO170912 301.07
+MECR251216 306.95
+HDSE220517 356.77
+MEKI090716 581.06
+**********************LISTAR**********************
+HEMU181217
+HEADSET GAMER WARRIOR PRETO E AZUL
+MULTILASER
+18/12/2017
+0137.32
+HEADSET, PERIFERICO
+
+GASH190317
+GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX
+SHARKOON
+19/03/2018
+0296.36
+GABINETE
+
+FOCO170912
+FONTE 600W 80 PLUS
+CORSAIR
+17/09/2016
+0301.08
+FONTE, HARDWARE
+
+MECR251216
+MEMORIA RAM 8GB 2400MHZ DDR4
+CRUCIAL
+25/12/2017
+0306.95
+MEMORIA, RAM, HARDWARE
+
+HDSE220517
+HD SEAGATE 2TB 7200RPM 64MB
+SEAGATE
+22/05/2018
+0356.77
+ARMAZENAMENTO, HARDWARE
+
+MEKI090716
+MEMORIA RAM 8GB 2400MHZ DDR4
+KINGSTON HYPERX
+09/07/2018
+0581.06
+MEMORIA, RAM, HARDWARE
+**********************ARQUIVO*********************
+FONTE 600W 80 PLUS@CORSAIR@17/09/2016@12@376.35@020@FONTE|HARDWARE@#############################################################################################################################HEADSET GAMER WARRIOR PRETO E AZUL@MULTILASER@18/12/2017@17@171.65@020@HEADSET|PERIFERICO@######################################################################################################GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX@SHARKOON@19/03/2018@17@329.29@010@GABINETE@######################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@CRUCIAL@25/12/2017@16@341.06@010@MEMORIA|RAM|HARDWARE@#############################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@KINGSTON HYPERX@09/07/2018@16@611.65@005@MEMORIA|RAM|HARDWARE@#####################################################################################################HD SEAGATE 2TB 7200RPM 64MB@SEAGATE@22/05/2018@17@375.55@005@ARMAZENAMENTO|HARDWARE@############################################################################################################
+**********************ALTERAR*********************
+OPERACAO REALIZADA COM SUCESSO!
+**********************LISTAR**********************
+HEMU181217
+HEADSET GAMER WARRIOR PRETO E AZUL
+MULTILASER
+18/12/2017
+0137.32
+HEADSET, PERIFERICO
+
+HDSE220517
+HD SEAGATE 2TB 7200RPM 64MB
+SEAGATE
+22/05/2018
+0281.66
+ARMAZENAMENTO, HARDWARE
+
+GASH190317
+GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX
+SHARKOON
+19/03/2018
+0296.36
+GABINETE
+
+FOCO170912
+FONTE 600W 80 PLUS
+CORSAIR
+17/09/2016
+0301.08
+FONTE, HARDWARE
+
+MECR251216
+MEMORIA RAM 8GB 2400MHZ DDR4
+CRUCIAL
+25/12/2017
+0306.95
+MEMORIA, RAM, HARDWARE
+
+MEKI090716
+MEMORIA RAM 8GB 2400MHZ DDR4
+KINGSTON HYPERX
+09/07/2018
+0581.06
+MEMORIA, RAM, HARDWARE
+*****************ARQUIVO SECUNDARIO****************
+HEMU181217 137.32
+HDSE220517 281.66
+GASH190317 296.36
+FOCO170912 301.07
+MECR251216 306.95
+MEKI090716 581.06
+**********************ARQUIVO*********************
+FONTE 600W 80 PLUS@CORSAIR@17/09/2016@12@376.35@020@FONTE|HARDWARE@#############################################################################################################################HEADSET GAMER WARRIOR PRETO E AZUL@MULTILASER@18/12/2017@17@171.65@020@HEADSET|PERIFERICO@######################################################################################################GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX@SHARKOON@19/03/2018@17@329.29@010@GABINETE@######################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@CRUCIAL@25/12/2017@16@341.06@010@MEMORIA|RAM|HARDWARE@#############################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@KINGSTON HYPERX@09/07/2018@16@611.65@005@MEMORIA|RAM|HARDWARE@#####################################################################################################HD SEAGATE 2TB 7200RPM 64MB@SEAGATE@22/05/2018@17@375.55@025@ARMAZENAMENTO|HARDWARE@############################################################################################################
+ERRO: Ja existe um registro com a chave primaria: HDSE220517.
+**********************ARQUIVO*********************
+FONTE 600W 80 PLUS@CORSAIR@17/09/2016@12@376.35@020@FONTE|HARDWARE@#############################################################################################################################HEADSET GAMER WARRIOR PRETO E AZUL@MULTILASER@18/12/2017@17@171.65@020@HEADSET|PERIFERICO@######################################################################################################GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX@SHARKOON@19/03/2018@17@329.29@010@GABINETE@######################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@CRUCIAL@25/12/2017@16@341.06@010@MEMORIA|RAM|HARDWARE@#############################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@KINGSTON HYPERX@09/07/2018@16@611.65@005@MEMORIA|RAM|HARDWARE@#####################################################################################################HD SEAGATE 2TB 7200RPM 64MB@SEAGATE@22/05/2018@17@375.55@025@ARMAZENAMENTO|HARDWARE@############################################################################################################SSD KINGSTON 2.5 240GB A400 SATA III@KINGSTON@22/06/2018@18@335.18@020@ARMAZENAMENTO|HARDWARE@##################################################################################################
+**********************EXCLUIR*********************
+OPERACAO REALIZADA COM SUCESSO!
+**********************ALTERAR*********************
+Registro(s) nao encontrado!
+FALHA AO REALIZAR OPERACAO!
+**********************ARQUIVO*********************
+FONTE 600W 80 PLUS@CORSAIR@17/09/2016@12@376.35@020@FONTE|HARDWARE@#############################################################################################################################HEADSET GAMER WARRIOR PRETO E AZUL@MULTILASER@18/12/2017@17@171.65@020@HEADSET|PERIFERICO@######################################################################################################GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX@SHARKOON@19/03/2018@17@329.29@010@GABINETE@######################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@CRUCIAL@25/12/2017@16@341.06@010@MEMORIA|RAM|HARDWARE@#############################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@KINGSTON HYPERX@09/07/2018@16@611.65@005@MEMORIA|RAM|HARDWARE@#####################################################################################################*| SEAGATE 2TB 7200RPM 64MB@SEAGATE@22/05/2018@17@375.55@025@ARMAZENAMENTO|HARDWARE@############################################################################################################SSD KINGSTON 2.5 240GB A400 SATA III@KINGSTON@22/06/2018@18@335.18@020@ARMAZENAMENTO|HARDWARE@##################################################################################################HD SEAGATE 2TB 7200RPM 64MB@SEAGATE@22/05/2018@17@375.55@005@ARMAZENAMENTO|HARDWARE@############################################################################################################
+**********************LISTAR**********************
+HEMU181217
+HEADSET GAMER WARRIOR PRETO E AZUL
+MULTILASER
+18/12/2017
+0137.32
+HEADSET, PERIFERICO
+
+SSKI220618
+SSD KINGSTON 2.5 240GB A400 SATA III
+KINGSTON
+22/06/2018
+0268.14
+ARMAZENAMENTO, HARDWARE
+
+HDSE220517
+HD SEAGATE 2TB 7200RPM 64MB
+SEAGATE
+22/05/2018
+0356.77
+ARMAZENAMENTO, HARDWARE
+
+GASH190317
+GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX
+SHARKOON
+19/03/2018
+0296.36
+GABINETE
+
+FOCO170912
+FONTE 600W 80 PLUS
+CORSAIR
+17/09/2016
+0301.08
+FONTE, HARDWARE
+
+MECR251216
+MEMORIA RAM 8GB 2400MHZ DDR4
+CRUCIAL
+25/12/2017
+0306.95
+MEMORIA, RAM, HARDWARE
+
+MEKI090716
+MEMORIA RAM 8GB 2400MHZ DDR4
+KINGSTON HYPERX
+09/07/2018
+0581.06
+MEMORIA, RAM, HARDWARE
+**********************EXCLUIR*********************
+OPERACAO REALIZADA COM SUCESSO!
+**********************BUSCAR**********************
+Registro(s) nao encontrado!
+**********************BUSCAR**********************
+Registro(s) nao encontrado!
+**********************BUSCAR**********************
+HDSE220517
+HD SEAGATE 2TB 7200RPM 64MB
+SEAGATE
+22/05/2018
+375.55
+005
+ARMAZENAMENTO, HARDWARE
+**********************BUSCAR**********************
+HDSE220517
+HD SEAGATE 2TB 7200RPM 64MB
+SEAGATE
+22/05/2018
+375.55
+005
+ARMAZENAMENTO, HARDWARE
+**********************ARQUIVO*********************
+FONTE 600W 80 PLUS@CORSAIR@17/09/2016@12@376.35@020@FONTE|HARDWARE@#############################################################################################################################HEADSET GAMER WARRIOR PRETO E AZUL@MULTILASER@18/12/2017@17@171.65@020@HEADSET|PERIFERICO@######################################################################################################GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX@SHARKOON@19/03/2018@17@329.29@010@GABINETE@######################################################################################################*|MORIA RAM 8GB 2400MHZ DDR4@CRUCIAL@25/12/2017@16@341.06@010@MEMORIA|RAM|HARDWARE@#############################################################################################################MEMORIA RAM 8GB 2400MHZ DDR4@KINGSTON HYPERX@09/07/2018@16@611.65@005@MEMORIA|RAM|HARDWARE@#####################################################################################################*| SEAGATE 2TB 7200RPM 64MB@SEAGATE@22/05/2018@17@375.55@025@ARMAZENAMENTO|HARDWARE@############################################################################################################SSD KINGSTON 2.5 240GB A400 SATA III@KINGSTON@22/06/2018@18@335.18@020@ARMAZENAMENTO|HARDWARE@##################################################################################################HD SEAGATE 2TB 7200RPM 64MB@SEAGATE@22/05/2018@17@375.55@005@ARMAZENAMENTO|HARDWARE@############################################################################################################
+*****************ARQUIVO SECUNDARIO****************
+FOCO170912 FONTE 600W 80 PLUS
+GASH190317 GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX
+HDSE220517 HD SEAGATE 2TB 7200RPM 64MB
+HEMU181217 HEADSET GAMER WARRIOR PRETO E AZUL
+MECR251216 MEMORIA RAM 8GB 2400MHZ DDR4
+MEKI090716 MEMORIA RAM 8GB 2400MHZ DDR4
+SSKI220618 SSD KINGSTON 2.5 240GB A400 SATA III
+**********************LISTAR**********************
+FOCO170912
+FONTE 600W 80 PLUS
+CORSAIR
+17/09/2016
+376.35
+020
+FONTE, HARDWARE
+
+GASH190317
+GABINETE SHARKOON TG5 BLUE VIDRO TEMPERADO ATX
+SHARKOON
+19/03/2018
+329.29
+010
+GABINETE
+
+HDSE220517
+HD SEAGATE 2TB 7200RPM 64MB
+SEAGATE
+22/05/2018
+375.55
+005
+ARMAZENAMENTO, HARDWARE
+
+HEMU181217
+HEADSET GAMER WARRIOR PRETO E AZUL
+MULTILASER
+18/12/2017
+171.65
+020
+HEADSET, PERIFERICO
+
+MEKI090716
+MEMORIA RAM 8GB 2400MHZ DDR4
+KINGSTON HYPERX
+09/07/2018
+611.65
+005
+MEMORIA, RAM, HARDWARE
+
+SSKI220618
+SSD KINGSTON 2.5 240GB A400 SATA III
+KINGSTON
+22/06/2018
+335.18
+020
+ARMAZENAMENTO, HARDWARE

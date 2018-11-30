@@ -1,0 +1,34 @@
+Casos abertos
+
+
+0.in: Inserir (1), Imprimir iproduct (8 1) ,Imprimir arquivo (7)
+1.in: + Buscar por código (4 1), Listar por código (5 1)
+2.in: + Buscar por nome (4 2), Listar por marca (5 3), Imprimir ibrand por marca (8 2)
+3.in: + Buscar por marca e categoria (4 3), Listar por categoria (5 2), Listar por preço (5 4), Imprimir icategory (8 3), Imprimir iprice (8 3)
+4.in: + Alterar (2)
+5.in: + Remover (3)
+6.in: + Liberar espaço (6)
+7.in: Todas as opções, atenção na busca e impressão de arquivo e índice após remoção
+8.in: Todas as opções, atenção em testes com ARQUIVO antes e após remoção e alteração
+9.in: Todas as opções, atenção em testes com ARQUIVO antes e após remoção + inserção de produto removido
+10.in: Todas as opções
+11.in: 1.in com arquivo
+12.in: 2.in com arquivo
+13.in: 3.in com arquivo
+14.in: 4.in com arquivo
+15.in: 5.in com arquivo
+16.in: 6.in com arquivo
+17.in: 7.in com arquivo
+18.in: 8.in com arquivo
+19.in: 9.in com arquivo
+20.in: 10.in com arquivo
+21.in: Opções 1, 4, 7, 8
+22.in: Opções 1, 4, 7, 8
+23.in: Opções 1, 4, 5, 7, 8
+24.in: Opções 1, 2, 4, 5, 7, 8
+25.in: Opções 1, 2, 3, 4, 5, 7, 8
+26.in: Opções 1, 2, 3, 4, 5, 6, 7, 8
+27.in: Todas as opções com arquivo
+28.in: Todas as opções com arquivo
+29.in: Todas as opções com arquivo
+30.in: Todas as opções com arquivo
