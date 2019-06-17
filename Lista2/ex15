@@ -1,0 +1,9 @@
+void calcula_bal(no* t){
+    if(t == NULL){
+        return;
+    }
+
+    t->bal = getAltura(t->esq) - getAltura(t->dir);
+    calcula_bal(t->esq);
+    calcula_bal(t->dir);
+}

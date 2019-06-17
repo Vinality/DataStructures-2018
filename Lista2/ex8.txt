@@ -1,0 +1,9 @@
+EX8
+
+              -
+          *         *
+      +       -   e   f
+    a   b   c   d
+
+    Pré ordem(no, esq, dir): - * + a b - c d * e f
+    Pós ordem(esq, dir, no): a b + c d - * e f * -

@@ -1,0 +1,17 @@
+//EX 4
+
+void n_rec_inorder(no* t){
+    stack<no*> s;
+    no* temp = t;
+
+    while(temp != NULL || s.empty() == 0){
+        while(temp != NULL){
+            s.push(temp);
+            temp = temp->esq;
+        }
+        temp = s.pop();
+        cout << temp->data << endl;
+
+        temp = temp->dir;
+    }
+}

@@ -1,0 +1,10 @@
+EX9
+
+PRÉ ORDEM(no, esq, dir): C E A D H K J B M F L G I
+IN ORDEM(esq, no, dir): D A K H E C B J L F M G I
+
+                C
+           E         J
+       A         B       M
+    D      H          F    G
+         K          L        I

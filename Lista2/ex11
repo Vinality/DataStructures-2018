@@ -1,0 +1,13 @@
+//EX11 - Lista2
+
+int existe_chave_negativa(no* t){
+    if(!t) return 0;
+    temp = t;
+    while(temp->esq){
+        if(temp->dado < 0)
+            return 1;
+        else
+            temp = temp->esq
+    }
+    return 0;
+}
