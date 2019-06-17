@@ -3,8 +3,6 @@
 ```
   Based on C, C++ and Python
 ```
----
-
 ## Data Structures I
 ---
 ### Main Topics:
